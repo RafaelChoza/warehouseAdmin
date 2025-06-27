@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import warehouse.dto.Cart;
 import warehouse.dto.User;
 import warehouse.repository.CartRepository;
+import warehouse.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +18,17 @@ public class CartService {
     @Autowired
     CartRepository cartRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     public Cart getOrCreateCart(User user) {
-        return cartRepository.findByUserAndActiveTrue(user)
+        User realUser = userRepository.findById(user.getId())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return cartRepository.findByUserAndActiveTrue(realUser)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
-                    newCart.setUser(user);
+                    newCart.setUser(realUser);
                     newCart.setActive(true);
                     return cartRepository.save(newCart);
                 });

@@ -74,4 +74,11 @@ public class CartItemController {
         return ResponseEntity.ok(itemToDecrease);
     }
 
+    @DeleteMapping("/cartEmpty")
+    public ResponseEntity<Void> deleteAllItems() {
+        cartItemService.deleteAllItems();
+
+        return ResponseEntity.notFound().build();
+    }
+
 }
