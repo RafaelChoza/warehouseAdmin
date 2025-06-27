@@ -1,12 +1,21 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import Menu from './components/Menu'
+import Products from './components/Products'
+import Login from './components/Login'
+import Users from './components/Users'
+import RequestUser from './components/RequestUser'
 
 function App() {
 
   return (
     <BrowserRouter>
         <Routes>
-          <Route path='/products' />
+          <Route path='/menu' element={<Menu />} />
+          <Route path='/products' element={<Products />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='/users-request' element={<RequestUser />} />
         </Routes>
     </BrowserRouter>
   )

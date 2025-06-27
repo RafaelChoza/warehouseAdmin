@@ -1,5 +1,5 @@
-export type PrpductType = {
-    id?:number,
+export type ProductType = {
+    id?: number,
     name: string,
     description: string,
     vendor: string,
@@ -8,4 +8,31 @@ export type PrpductType = {
     price: number,
     mro?: string,
     createdAt?: string,
+}
+
+
+export type UserType = {
+    id: number;
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    role: string;
+}
+
+export type UserRequestFormType = {
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    confirmPassword: string,
+    role: string;
+
+}
+
+export type LoginUserType = {
+    username: string;
+    password: string;
 }
