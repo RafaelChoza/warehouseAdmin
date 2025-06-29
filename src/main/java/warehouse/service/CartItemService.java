@@ -42,10 +42,18 @@ public class CartItemService {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
 
-        cartItem.setProduct(product);
-        cartItem.setCart(cart);
+        // 💡 Buscar si ya existe ese producto en ese carrito
+        Optional<CartItem> existingCartItemOp = cartItemRepository.findByCartIdAndProductId(cartId, productId);
 
-        return cartItemRepository.save(cartItem);
+        if (existingCartItemOp.isPresent()) {
+            CartItem existingCartItem = existingCartItemOp.get();
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + cartItem.getQuantity());
+            return cartItemRepository.save(existingCartItem);
+        } else {
+            cartItem.setProduct(product);
+            cartItem.setCart(cart);
+            return cartItemRepository.save(cartItem);
+        }
     }
 
     public CartItem updateCartItem(Long id, CartItem updatedCartItem) {

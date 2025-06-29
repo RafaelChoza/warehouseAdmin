@@ -3,7 +3,6 @@ package warehouse.auth;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,9 @@ public class AuthService {
         System.out.println(request);
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.getToken(user);
+
         System.out.println("TOKEN JWT generado: " + token);
         return AuthResponse.builder()
                 .token(token)
@@ -43,8 +43,9 @@ public class AuthService {
         System.out.println("El método existsByUsername retorna: " + existsByUsername);
 
         if (existsByUsername) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de usuario " + request.getUsername()
-                    + " ya existe, no pueden duplicarse, verifique que sea el correcto");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "El nombre de usuario " + request.getUsername() +
+                            " ya existe, no pueden duplicarse, verifique que sea el correcto");
         }
 
         User user = User.builder()
@@ -55,10 +56,11 @@ public class AuthService {
                 .lastName(request.getLastName())
                 .role(Role.USER)
                 .build();
-        userRepository.save(user);
-        UserDetails userDetails = userRepository.findByUsername(request.getUsername()).orElseThrow();
+
+        userRepository.save(user); // ya tienes el objeto `user`, no necesitas buscarlo otra vez
+
         return AuthResponse.builder()
-                .token(jwtService.getToken(userDetails))
+                .token(jwtService.getToken(user)) // usa directamente `user`
                 .build();
     }
 

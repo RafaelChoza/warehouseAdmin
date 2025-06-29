@@ -5,6 +5,7 @@ import Products from './components/Products'
 import Login from './components/Login'
 import Users from './components/Users'
 import RequestUser from './components/RequestUser'
+import ItemsCart from './components/ItemsCart'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/users' element={<Users />} />
           <Route path='/users-request' element={<RequestUser />} />
+          <Route path='/items-cart' element={<ItemsCart />} />
         </Routes>
     </BrowserRouter>
   )

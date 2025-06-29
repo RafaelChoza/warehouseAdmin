@@ -36,3 +36,18 @@ export type LoginUserType = {
     username: string;
     password: string;
 }
+
+export type CartItemType = {
+  id: string | number;
+  product: {
+    name: string;
+    [key: string]: any;
+  };
+  quantity: number;
+  [key: string]: any;
+};
+
+export type CartType = {
+  items: CartItemType[];
+  [key: string]: any;
+};

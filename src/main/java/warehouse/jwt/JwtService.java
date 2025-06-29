@@ -16,6 +16,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import warehouse.auth.RevokedTokenRepository;
+import warehouse.dto.User;
 
 @Service
 public class JwtService {
@@ -23,12 +24,13 @@ public class JwtService {
     private static final String SECRET_KEY = "586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
     private RevokedTokenRepository revokedTokenRepository;
 
-    public String getToken(UserDetails user) {
-        Map<String, Object> extraClaims = new HashMap<>();
-        // Aquí agregas el rol
-        extraClaims.put("role", user.getAuthorities().iterator().next().getAuthority());
-        return getToken(extraClaims, user); // Llama al método privado
-    }
+    public String getToken(User user) {
+    Map<String, Object> extraClaims = new HashMap<>();
+    extraClaims.put("role", user.getRole().name());
+    extraClaims.put("userId", user.getId());
+    return getToken(extraClaims, user);
+}
+
 
     private String getToken(Map<String, Object> extraClaims, UserDetails user) {
         return Jwts

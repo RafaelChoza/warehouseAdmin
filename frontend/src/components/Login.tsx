@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import postLogin from '../service/postLogin';
+import { useNavigate } from 'react-router-dom';
+import postCar from '../service/postCar';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     console.log(username, password)
     e.preventDefault();
     try {
       const response = await postLogin({username, password})
-      localStorage.setItem("token", response.token)
+      const token = response.token
+      localStorage.setItem("token", token)
+      await postCar(token)
+      navigate("/products")
       console.log(response.token)
     } catch (error) {
       alert("Credenciales no validas")

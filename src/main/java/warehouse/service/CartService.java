@@ -21,8 +21,8 @@ public class CartService {
     @Autowired
     UserRepository userRepository;
 
-    public Cart getOrCreateCart(User user) {
-        User realUser = userRepository.findById(user.getId())
+    public Cart getOrCreateCart(Long id) {
+        User realUser = userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         return cartRepository.findByUserAndActiveTrue(realUser)
