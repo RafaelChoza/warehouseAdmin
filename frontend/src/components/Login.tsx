@@ -1,12 +1,20 @@
 import { useState } from 'react';
+import postLogin from '../service/postLogin';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log(username, password)
     e.preventDefault();
-  
+    try {
+      const response = await postLogin({username, password})
+      localStorage.setItem("token", response.token)
+      console.log(response.token)
+    } catch (error) {
+      alert("Credenciales no validas")
+    }
   };
 
   return (
@@ -15,11 +23,11 @@ export default function Login() {
         <h2 className="text-2xl font-bold text-orange-600 mb-6 text-center">Iniciar sesión</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre de Usuario</label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
             />

@@ -26,10 +26,12 @@ public class AuthService {
     private final RevokedTokenRepository revokedTokenRepository;
 
     public AuthResponse login(LoginRequest request) {
+        System.out.println(request);
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.getToken(user);
+        System.out.println("TOKEN JWT generado: " + token);
         return AuthResponse.builder()
                 .token(token)
                 .build();
