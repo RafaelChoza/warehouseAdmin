@@ -4,7 +4,6 @@ import fetchProducts from '../service/fetchProducts';
 import type { ProductType } from '../Types';
 import postCartItem from '../service/postCartItem';
 import ItemsCart from './ItemsCart';
-import postIdMachine from '../service/postIdMachine';
 import { useShopStore } from '../store/ShopState';
 import AsignMachineModal from './AsignMachineModal';
 
@@ -12,7 +11,7 @@ export default function Products() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [showCart, setShowCart] = useState(false);
   const { cart, fetchCart } = useCart();
-  const { idMachine, setSelectedProductId } = useShopStore();
+  const { setSelectedProductId } = useShopStore();
   const [showModal, setShowModal] = useState(false);
   const toggleCart = () => setShowCart(prev => !prev);
 
@@ -32,16 +31,7 @@ export default function Products() {
     }
   };
 
-  const handleAsignMachine = async (id: number, idMachine: string) => {
-    try {
-      const response = await postIdMachine(id, idMachine);
-      if (!response.ok) {
-        console.log("Máquina asignada");
-      }
-    } catch (error) {
-      console.error("Error al asignar máquina:", error);
-    }
-  };
+  
 
   return (
     <div className="relative min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100">
@@ -83,7 +73,6 @@ export default function Products() {
                       onClick={() => {
                         if (typeof product.id === 'number') {
                           handleAddToCart(product);
-                          handleAsignMachine(product.id, idMachine);
                           setSelectedProductId(product.id);
                           setShowModal(true)
                         } else {

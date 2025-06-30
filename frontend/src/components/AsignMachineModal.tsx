@@ -23,6 +23,17 @@ export default function AsignMachineModal() {
     }
   };
 
+  const handleAsignMachine = async (id: number, idMachine: string) => {
+    try {
+      const response = await postIdMachine(id, idMachine);
+      if (!response.ok) {
+        console.log("Máquina asignada");
+      }
+    } catch (error) {
+      console.error("Error al asignar máquina:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
@@ -32,6 +43,7 @@ export default function AsignMachineModal() {
         </label>
         <input
           type="text"
+          
           id="idMachine"
           placeholder="Escribe el ID de la máquina"
           value={idMachine}
@@ -41,6 +53,7 @@ export default function AsignMachineModal() {
         <button
           onClick={handleSubmit}
           className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-2 rounded-md font-semibold hover:scale-105 transition-transform"
+          onSubmit={() => handleAsignMachine}
         >
           Confirmar Asignación
         </button>
