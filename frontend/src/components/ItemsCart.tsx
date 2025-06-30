@@ -1,52 +1,22 @@
-import { useEffect, useState } from "react";
-import getActiveCart from "../service/getActiveCart";
-import type { CartType } from "../Types";
+import { useCart } from "../components/CartContext";
+import deleteItem from "../service/deleteItem";
+import updateQuantityService from "../service/updateQuantity";
+
 
 export default function ItemsCart() {
-  const [cart, setCart] = useState<CartType | null>(null);
+  const { cart, fetchCart } = useCart();
 
-  const fetchCart = async () => {
-    try {
-      const data = await getActiveCart();
-      setCart(data);
-    } catch (error) {
-      console.error("Error al obtener el carrito:", error);
+  const handleDeleteItem = async (id: number) => {
+    const success = await deleteItem(id);
+    if (success) {
+      await fetchCart();
     }
   };
 
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
-  const token = localStorage.getItem("token");
-
-  const updateQuantity = async (id: number, action: "increase" | "decrease") => {
-    try {
-      const response = await fetch(`http://localhost:8080/cartItem${action === "increase" ? "Increase" : "Decrease"}/${id}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) throw new Error("No se pudo actualizar la cantidad");
+  const handleUpdateQuantity = async (id: number, action: "increase" | "decrease") => {
+    const success = await updateQuantityService(id, action);
+    if (success) {
       await fetchCart();
-    } catch (error) {
-      console.error("Error actualizando cantidad:", error);
-    }
-  };
-
-  const deleteItem = async (id: number) => {
-    try {
-      const response = await fetch(`http://localhost:8080/cartItem/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) throw new Error("No se pudo eliminar el producto del carrito");
-      await fetchCart();
-    } catch (error) {
-      console.error("Error eliminando item:", error);
     }
   };
 
@@ -70,7 +40,7 @@ export default function ItemsCart() {
               </tr>
             </thead>
             <tbody>
-              {cart.items.map((item) => (
+              {cart.items.map(item => (
                 <tr key={item.id} className="border-t hover:bg-orange-50 transition">
                   <td className="px-4 py-2">{item.product.id}</td>
                   <td className="px-4 py-2">{item.product.name}</td>
@@ -78,19 +48,19 @@ export default function ItemsCart() {
                   <td className="px-4 py-2">{item.quantity}</td>
                   <td className="px-4 py-2 flex gap-2">
                     <button
-                      
+                      onClick={() => handleUpdateQuantity(Number(item.id), "increase")}
                       className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
                     >
                       +
                     </button>
                     <button
-                      
+                      onClick={() => handleUpdateQuantity(Number(item.id), "decrease")}
                       className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
                     >
                       -
                     </button>
                     <button
-                      
+                      onClick={() => handleDeleteItem(Number(item.id))}
                       className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                     >
                       Eliminar

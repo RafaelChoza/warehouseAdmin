@@ -1,3 +1,4 @@
+import { useCart } from '../components/CartContext';
 import { useEffect, useState } from 'react';
 import fetchProducts from '../service/fetchProducts';
 import type { ProductType } from '../Types';
@@ -7,22 +8,21 @@ import ItemsCart from './ItemsCart';
 export default function Products() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const { cart, fetchCart } = useCart();
 
   const toggleCart = () => setShowCart(prev => !prev);
 
   useEffect(() => {
     fetchProducts()
-      .then(data => setProducts(data))
-      .catch(error => console.error(error));
+      .then(setProducts)
+      .catch(console.error);
   }, []);
 
   const handleAddToCart = async (product: ProductType) => {
     try {
-      if (typeof product.id !== 'number') {
-        throw new Error('El producto no tiene un ID válido');
-      }
-      const addedItem = await postCartItem(product.id, 1);
-      console.log('Producto agregado al carrito:', addedItem);
+      if (typeof product.id !== 'number') throw new Error('El producto no tiene un ID válido');
+      await postCartItem(product.id, 1);
+      await fetchCart(); // actualiza el carrito desde contexto
     } catch (error) {
       console.error('Error al agregar producto al carrito:', error);
     }
@@ -30,15 +30,13 @@ export default function Products() {
 
   return (
     <div className="relative min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100">
-      {/* Botón para abrir/cerrar carrito */}
       <button
         onClick={toggleCart}
         className="mb-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition"
       >
-        {showCart ? "Cerrar carrito" : "Ver carrito"}
+        {showCart ? "Cerrar carrito" : `Ver carrito (${cart?.items.length || 0})`}
       </button>
 
-      {/* Tabla de productos */}
       <h2 className="text-3xl font-bold text-orange-600 mb-6">Productos</h2>
       {products.length === 0 ? (
         <p className="text-gray-500">Cargando productos...</p>
@@ -83,10 +81,10 @@ export default function Products() {
       {/* Sidebar carrito */}
       <div
         className={`
-    fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 z-50
-    ${showCart ? "translate-x-0" : "translate-x-full"}
-    w-[40rem]
-  `}
+          fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 z-50
+          ${showCart ? "translate-x-0" : "translate-x-full"}
+          w-[40rem]
+        `}
       >
 
         <ItemsCart />
