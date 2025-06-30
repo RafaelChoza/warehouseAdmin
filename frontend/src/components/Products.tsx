@@ -8,16 +8,12 @@ import postIdMachine from '../service/postIdMachine';
 import { useShopStore } from '../store/ShopState';
 import AsignMachineModal from './AsignMachineModal';
 
-
-
 export default function Products() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [showCart, setShowCart] = useState(false);
   const { cart, fetchCart } = useCart();
   const { idMachine, setSelectedProductId } = useShopStore();
   const [showModal, setShowModal] = useState(false);
-
-
   const toggleCart = () => setShowCart(prev => !prev);
 
   useEffect(() => {
