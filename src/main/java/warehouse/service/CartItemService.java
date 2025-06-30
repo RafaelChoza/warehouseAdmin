@@ -108,4 +108,11 @@ public class CartItemService {
         cartItemRepository.deleteAll();
     }
 
+    public CartItem asignMachine(Long id, String idMachine) {
+        CartItem cartItem = cartItemRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("No se encuentra el item con el id :" + id));
+        cartItem.setForMachine(idMachine);
+        return cartItemRepository.save(cartItem);
+    }
+
 }

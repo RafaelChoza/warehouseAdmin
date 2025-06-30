@@ -34,4 +34,6 @@ public class CartItem {
     private Product product;
 
     private Long quantity;
+
+    private String forMachine;
 }

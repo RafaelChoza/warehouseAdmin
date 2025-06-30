@@ -14,7 +14,7 @@ export default function ItemsCart() {
   const handleDeleteItem = async (id: number) => {
     try {
       await deleteItem(id);
-      await fetchCart(); // Actualiza el estado del carrito después de eliminar el item
+      await fetchCart(); 
     } catch (error) {
       console.error('Error eliminando item:', error);
     }
@@ -42,6 +42,7 @@ export default function ItemsCart() {
                 <th className="px-4 py-3">ID</th>
                 <th className="px-4 py-3">Nombre</th>
                 <th className="px-4 py-3">Descripción</th>
+                <th className="px-4 py-3">MRO</th>
                 <th className="px-4 py-3">Cantidad</th>
                 <th className="px-4 py-3">Acciones</th>
               </tr>
@@ -52,6 +53,7 @@ export default function ItemsCart() {
                   <td className="px-4 py-2">{item.product.id}</td>
                   <td className="px-4 py-2">{item.product.name}</td>
                   <td className="px-4 py-2">{item.product.description}</td>
+                  <td className="px-4 py-2">{item.product.mro}</td>
                   <td className="px-4 py-2">{item.quantity}</td>
                   <td className="px-4 py-2 flex gap-2">
                     <button

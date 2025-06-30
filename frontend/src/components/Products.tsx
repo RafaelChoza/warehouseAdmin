@@ -4,11 +4,19 @@ import fetchProducts from '../service/fetchProducts';
 import type { ProductType } from '../Types';
 import postCartItem from '../service/postCartItem';
 import ItemsCart from './ItemsCart';
+import postIdMachine from '../service/postIdMachine';
+import { useShopStore } from '../store/ShopState';
+import AsignMachineModal from './AsignMachineModal';
+
+
 
 export default function Products() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [showCart, setShowCart] = useState(false);
   const { cart, fetchCart } = useCart();
+  const { idMachine, setSelectedProductId } = useShopStore();
+  const [showModal, setShowModal] = useState(false);
+
 
   const toggleCart = () => setShowCart(prev => !prev);
 
@@ -22,9 +30,20 @@ export default function Products() {
     try {
       if (typeof product.id !== 'number') throw new Error('El producto no tiene un ID válido');
       await postCartItem(product.id, 1);
-      await fetchCart(); // actualiza el carrito desde contexto
+      await fetchCart();
     } catch (error) {
       console.error('Error al agregar producto al carrito:', error);
+    }
+  };
+
+  const handleAsignMachine = async (id: number, idMachine: string) => {
+    try {
+      const response = await postIdMachine(id, idMachine);
+      if (!response.ok) {
+        console.log("Máquina asignada");
+      }
+    } catch (error) {
+      console.error("Error al asignar máquina:", error);
     }
   };
 
@@ -65,7 +84,16 @@ export default function Products() {
                   <td className="px-4 py-2">{product.vendor}</td>
                   <td className="px-4 py-2">
                     <button
-                      onClick={() => handleAddToCart(product)}
+                      onClick={() => {
+                        if (typeof product.id === 'number') {
+                          handleAddToCart(product);
+                          handleAsignMachine(product.id, idMachine);
+                          setSelectedProductId(product.id);
+                          setShowModal(true)
+                        } else {
+                          console.error("El producto no tiene un ID válido");
+                        }
+                      }}
                       className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-3 py-1 rounded-full text-xs hover:scale-105 transition-transform"
                     >
                       Agregar al carrito
@@ -78,7 +106,6 @@ export default function Products() {
         </div>
       )}
 
-      {/* Sidebar carrito */}
       <div
         className={`
           fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 z-50
@@ -86,9 +113,22 @@ export default function Products() {
           w-[40rem]
         `}
       >
-
         <ItemsCart />
       </div>
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="relative z-60">
+            <AsignMachineModal />
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-white bg-orange-600 px-2 py-1 rounded hover:bg-orange-700 transition"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

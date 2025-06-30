@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import warehouse.dto.CartItem;
@@ -58,6 +59,13 @@ public class CartItemController {
         cartItemService.deleteCartItem(id);
 
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("cartItem/asignMachine/{id}")
+    public ResponseEntity<CartItem> asignMachine(@PathVariable Long id, @RequestParam String idMachine) {
+        CartItem cartItem = cartItemService.asignMachine(id, idMachine);
+        
+        return ResponseEntity.ok(cartItem);
     }
 
     @PostMapping("/cartItemIncrease/{id}")
