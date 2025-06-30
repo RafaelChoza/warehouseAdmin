@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useCart } from "../components/CartContext";
 import deleteItem from "../service/deleteItem";
 import updateQuantityService from "../service/updateQuantity";
@@ -6,10 +7,16 @@ import updateQuantityService from "../service/updateQuantity";
 export default function ItemsCart() {
   const { cart, fetchCart } = useCart();
 
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
   const handleDeleteItem = async (id: number) => {
-    const success = await deleteItem(id);
-    if (success) {
-      await fetchCart();
+    try {
+      await deleteItem(id);
+      await fetchCart(); // Actualiza el estado del carrito después de eliminar el item
+    } catch (error) {
+      console.error('Error eliminando item:', error);
     }
   };
 
