@@ -5,14 +5,13 @@ import type { ProductType } from '../Types';
 import postCartItem from '../service/postCartItem';
 import ItemsCart from './ItemsCart';
 import { useShopStore } from '../store/ShopState';
-import AsignMachineModal from './AsignMachineModal';
+
 
 export default function Products() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [showCart, setShowCart] = useState(false);
   const { cart, fetchCart } = useCart();
   const { setSelectedProductId } = useShopStore();
-  const [showModal, setShowModal] = useState(false);
   const toggleCart = () => setShowCart(prev => !prev);
 
   useEffect(() => {
@@ -74,7 +73,6 @@ export default function Products() {
                         if (typeof product.id === 'number') {
                           handleAddToCart(product);
                           setSelectedProductId(product.id);
-                          setShowModal(true)
                         } else {
                           console.error("El producto no tiene un ID válido");
                         }
@@ -95,24 +93,12 @@ export default function Products() {
         className={`
           fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 z-50
           ${showCart ? "translate-x-0" : "translate-x-full"}
-          w-[40rem]
+          w-[60rem]
         `}
       >
         <ItemsCart />
       </div>
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="relative z-60">
-            <AsignMachineModal />
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 text-white bg-orange-600 px-2 py-1 rounded hover:bg-orange-700 transition"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
+      
 
     </div>
   );

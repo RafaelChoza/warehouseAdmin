@@ -2,7 +2,7 @@ import { useShopStore } from '../store/ShopState';
 import postIdMachine from '../service/postIdMachine';
 
 export default function AsignMachineModal() {
-  const { idMachine, setIdMachine, selectedProductId } = useShopStore();
+  const { idMachine, setIdMachine } = useShopStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdMachine(e.target.value);

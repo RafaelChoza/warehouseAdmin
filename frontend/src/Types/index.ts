@@ -51,3 +51,7 @@ export type CartType = {
   items: CartItemType[];
   [key: string]: any;
 };
+
+export type CartTypeWithMachine = CartItemType & {
+  idMachine: string
+}

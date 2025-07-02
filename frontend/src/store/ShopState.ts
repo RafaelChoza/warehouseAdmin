@@ -1,15 +1,22 @@
 import { create } from "zustand";
+import type { CartTypeWithMachine } from "../Types";
 
 type ShopState = {
-  idMachine: string;
-  setIdMachine: (value: string) => void;
-  selectedProductId: number | null;
-  setSelectedProductId: (id: number) => void;
+  idMachineByProductId: Record<number, string>;
+  setIdMachineForProduct: (id: number, value: string) => void;
+  order: CartTypeWithMachine[];
+  setOrder: (order: CartTypeWithMachine[]) => void;
 };
 
+
 export const useShopStore = create<ShopState>((set) => ({
-  idMachine: '',
-  setIdMachine: (value) => set({ idMachine: value }),
-  selectedProductId: null,
-  setSelectedProductId: (id) => set({ selectedProductId: id }),
+  idMachineByProductId: {},
+  setIdMachineForProduct: (id, value) =>
+    set((state) => ({
+      idMachineByProductId: { ...state.idMachineByProductId, [id]: value },
+    })),
+  order: [],
+  setOrder: (order) => set({ order }),
 }));
+
+  
