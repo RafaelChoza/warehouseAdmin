@@ -25,6 +25,9 @@ public class CartItemService {
     @Autowired
     CartRepository cartRepository;
 
+    @Autowired
+    ProductService productService;
+
     public List<CartItem> getAllItems() {
         return cartItemRepository.findAll();
     }
@@ -42,16 +45,18 @@ public class CartItemService {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
 
-        // 💡 Buscar si ya existe ese producto en ese carrito
+        // Buscar si ya existe ese producto en ese carrito
         Optional<CartItem> existingCartItemOp = cartItemRepository.findByCartIdAndProductId(cartId, productId);
 
         if (existingCartItemOp.isPresent()) {
             CartItem existingCartItem = existingCartItemOp.get();
             existingCartItem.setQuantity(existingCartItem.getQuantity() + cartItem.getQuantity());
+            productService.decreaseQuantityProduct(productId, cartItem.getQuantity().intValue());
             return cartItemRepository.save(existingCartItem);
         } else {
             cartItem.setProduct(product);
             cartItem.setCart(cart);
+            productService.decreaseQuantityProduct(productId, cartItem.getQuantity().intValue());
             return cartItemRepository.save(cartItem);
         }
     }
@@ -68,12 +73,24 @@ public class CartItemService {
     }
 
     public void deleteCartItem(Long id) {
+        CartItem cartItem = cartItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró el item con ID: " + id));
+
+        Long productId = cartItem.getProduct().getId();
+        Integer quantityToReturn = cartItem.getQuantity().intValue();
+
+        productService.increaseQuantityProduct(productId, quantityToReturn);
+
         cartItemRepository.deleteById(id);
     }
 
     public CartItem increaseQuantity(Long itemId) {
         CartItem cartItem = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("No se encontró el item con ID: " + itemId));
+
+        Long productId = cartItem.getProduct().getId();
+
+        productService.decreaseQuantityProduct(productId, 1);
 
         Long newQuantity = cartItem.getQuantity() + 1;
 
@@ -89,6 +106,7 @@ public class CartItemService {
         CartItem cartItem = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("No se encontró el item con ID: " + itemId));
 
+        Long productId = cartItem.getProduct().getId();
         Long newQuantity = cartItem.getQuantity() - 1;
 
         if (newQuantity < 0) {
@@ -96,12 +114,16 @@ public class CartItemService {
         }
 
         if (newQuantity == 0) {
+            // Si se va a eliminar el item, regresamos la última unidad al inventario
+            productService.increaseQuantityProduct(productId, 1);
             cartItemRepository.deleteById(itemId);
             return null;
+        } else {
+            // Si solo se reduce la cantidad, disminuimos el inventario
+            productService.decreaseQuantityProduct(productId, 1);
+            cartItem.setQuantity(newQuantity);
+            return cartItemRepository.save(cartItem);
         }
-
-        cartItem.setQuantity(newQuantity);
-        return cartItemRepository.save(cartItem);
     }
 
     public void deleteAllItems() {
@@ -110,7 +132,7 @@ public class CartItemService {
 
     public CartItem asignMachine(Long id, String idMachine) {
         CartItem cartItem = cartItemRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("No se encuentra el item con el id :" + id));
+                .orElseThrow(() -> new RuntimeException("No se encuentra el item con el id :" + id));
         cartItem.setForMachine(idMachine);
         return cartItemRepository.save(cartItem);
     }
