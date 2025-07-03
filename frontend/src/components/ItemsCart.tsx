@@ -141,8 +141,9 @@ export default function ItemsCart(): JSX.Element {
           </table>
         </div>
       )}
-      <div>
+      <div className="flex items-center">
         <button
+          className="border-2 rounded-3xl px-3 py-2 bg-amber-600 text-white font-bold my-3 hover:bg-amber-700"
           onClick={handleSendOrder}>
           Enviar Solicitud
         </button>
