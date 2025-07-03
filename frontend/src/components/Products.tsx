@@ -1,6 +1,5 @@
 import { useCart } from '../components/CartContext';
 import { useEffect, useState } from 'react';
-import fetchProducts from '../service/fetchProducts';
 import type { ProductType } from '../Types';
 import postCartItem from '../service/postCartItem';
 import ItemsCart from './ItemsCart';
@@ -8,23 +7,22 @@ import { useShopStore } from '../store/ShopState';
 
 
 export default function Products() {
-  const [products, setProducts] = useState<ProductType[]>([]);
   const [showCart, setShowCart] = useState(false);
   const { cart, fetchCart } = useCart();
-  const { setSelectedProductId } = useShopStore();
+  const { products, fetchProducts} = useShopStore();
+  const { } = useShopStore();
   const toggleCart = () => setShowCart(prev => !prev);
 
   useEffect(() => {
     fetchProducts()
-      .then(setProducts)
-      .catch(console.error);
-  }, []);
+  }, [fetchProducts]);
 
   const handleAddToCart = async (product: ProductType) => {
     try {
       if (typeof product.id !== 'number') throw new Error('El producto no tiene un ID válido');
       await postCartItem(product.id, 1);
       await fetchCart();
+      await fetchProducts()
     } catch (error) {
       console.error('Error al agregar producto al carrito:', error);
     }
@@ -72,7 +70,6 @@ export default function Products() {
                       onClick={() => {
                         if (typeof product.id === 'number') {
                           handleAddToCart(product);
-                          setSelectedProductId(product.id);
                         } else {
                           console.error("El producto no tiene un ID válido");
                         }

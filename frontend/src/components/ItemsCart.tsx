@@ -9,7 +9,7 @@ import type { CartTypeWithMachine } from "../Types";
 
 export default function ItemsCart(): JSX.Element {
   const { cart, fetchCart } = useCart();
-  const { idMachineByProductId, setIdMachineForProduct, setOrder } = useShopStore(); 
+  const { idMachineByProductId, setIdMachineForProduct, setOrder, fetchProducts } = useShopStore(); 
 
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export default function ItemsCart(): JSX.Element {
     try {
       await deleteItem(id);
       await fetchCart();
+      await fetchProducts();
     } catch (error) {
       console.error('Error eliminando item:', error);
     }
@@ -32,6 +33,7 @@ export default function ItemsCart(): JSX.Element {
     const success = await updateQuantityService(id, action);
     if (success) {
       await fetchCart();
+      await fetchProducts();
     }
   };
 

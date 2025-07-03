@@ -1,11 +1,14 @@
 import { create } from "zustand";
-import type { CartTypeWithMachine } from "../Types";
+import type { CartTypeWithMachine, ProductType } from "../Types";
+import fetchProducts from "../service/fetchProducts";
 
 type ShopState = {
   idMachineByProductId: Record<number, string>;
   setIdMachineForProduct: (id: number, value: string) => void;
   order: CartTypeWithMachine[];
   setOrder: (order: CartTypeWithMachine[]) => void;
+  products: ProductType[];
+  fetchProducts: () => void;
 };
 
 
@@ -17,6 +20,15 @@ export const useShopStore = create<ShopState>((set) => ({
     })),
   order: [],
   setOrder: (order) => set({ order }),
+  products: [],
+  fetchProducts: async () => {
+    try {
+      const data = await fetchProducts();
+      set({products: data})
+    } catch (error) {
+      console.error("Error al obtener productos", error);
+    }
+  }
 }));
 
   
