@@ -9,4 +9,5 @@ import warehouse.dto.User;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
     Optional<Cart> findByUserAndActiveTrue(User user);
+    Optional<Cart> findByUserId(Long userId);
 }

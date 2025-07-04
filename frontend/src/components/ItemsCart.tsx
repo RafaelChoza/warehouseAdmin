@@ -5,11 +5,17 @@ import updateQuantityService from "../service/updateQuantity";
 import postIdMachine from "../service/postIdMachine";
 import { useShopStore } from "../store/ShopState";
 import type { CartTypeWithMachine } from "../Types";
+import postOrder from "../service/postOrder";
+import { jwtDecode } from "jwt-decode";
+
+interface TokenType {
+  userId: number
+}
 
 
 export default function ItemsCart(): JSX.Element {
   const { cart, fetchCart } = useCart();
-  const { idMachineByProductId, setIdMachineForProduct, setOrder, fetchProducts } = useShopStore(); 
+  const { idMachineByProductId, setIdMachineForProduct, setOrder, fetchProducts } = useShopStore();
 
 
   useEffect(() => {
@@ -49,23 +55,43 @@ export default function ItemsCart(): JSX.Element {
   };
 
   const handleSendOrder = () => {
-  if (!cart) return;
+    if (!cart) return;
 
-  const formattedOrder: CartTypeWithMachine[] = cart.items.map(item => ({
-    ...item,
-    idMachine: idMachineByProductId[Number(item.id)] || ""
-  }));
+    const formattedOrder: CartTypeWithMachine[] = cart.items.map(item => ({
+      ...item,
+      idMachine: idMachineByProductId[Number(item.id)] || ""
+    }));
 
-  const hasMissingMachines = formattedOrder.some(item => !item.idMachine);
+    const hasMissingMachines = formattedOrder.some(item => !item.idMachine);
 
-  if (hasMissingMachines) {
-    alert("Por favor asigna una máquina a todos los productos antes de enviar la solicitud.");
-    return;
-  }
+    if (hasMissingMachines) {
+      alert("Por favor asigna una máquina a todos los productos antes de enviar la solicitud.");
+      return;
+    }
 
-  setOrder(formattedOrder);
-  console.log("Orden lista para enviar:", formattedOrder);
-};
+    setOrder(formattedOrder);
+    console.log("Orden lista para enviar:", formattedOrder);
+    try {
+      const token = localStorage.getItem("token")
+      if (token) {
+        console.log(token)
+        try {
+          const decoded = jwtDecode<TokenType>(token)
+
+          console.log("Token decodificado:", decoded)
+
+          const userId = decoded.userId
+          postOrder(userId)
+        } catch (error) {
+          console.error("No existe token")
+        }
+      }
+
+    } catch (error) {
+      console.error("Error al enviar los datos")
+    }
+
+  };
 
 
 

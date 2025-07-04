@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import warehouse.dto.Cart;
 import warehouse.dto.Order;
 import warehouse.dto.OrderItem;
-import warehouse.dto.User;
 import warehouse.repository.CartRepository;
 import warehouse.repository.OrderRepository;
 
@@ -22,8 +21,8 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public Optional<Order> createOrderFromCart(User user) {
-    Cart cart = cartRepository.findByUserAndActiveTrue(user)
+    public Optional<Order> createOrderFromCart(Long userId) {
+    Cart cart = cartRepository.findByUserId(userId)
         .orElseThrow(() -> new RuntimeException("Usuario con ese Id no encontrado"));
 
     Order order = new Order();
