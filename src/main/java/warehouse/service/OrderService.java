@@ -22,31 +22,34 @@ public class OrderService {
     OrderRepository orderRepository;
 
     public Optional<Order> createOrderFromCart(Long userId) {
-    Cart cart = cartRepository.findByUserId(userId)
-        .orElseThrow(() -> new RuntimeException("Usuario con ese Id no encontrado"));
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario con ese Id no encontrado"));
 
-    Order order = new Order();
-    order.setUser(cart.getUser());
-    order.setActive(true);
+        Order order = new Order();
+        order.setUser(cart.getUser());
+        order.setActive(true);
 
-    List<OrderItem> orderItems = cart.getItems().stream().map(cartItem -> {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setProduct(cartItem.getProduct());
-        orderItem.setQuantity(cartItem.getQuantity());
-        orderItem.setForMachine(cartItem.getForMachine());
-        orderItem.setOrder(order);
-        return orderItem;
-    }).toList();
+        List<OrderItem> orderItems = cart.getItems().stream().map(cartItem -> {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProduct(cartItem.getProduct());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setForMachine(cartItem.getForMachine());
+            orderItem.setOrder(order);
+            return orderItem;
+        }).toList();
 
-    order.setItems(orderItems);
+        order.setItems(orderItems);
 
-    Order savedOrder = orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
 
-    cart.getItems().clear();
-    cartRepository.save(cart);
+        cart.getItems().clear();
+        cartRepository.save(cart);
 
-    return Optional.of(savedOrder);
-}
+        return Optional.of(savedOrder);
+    }
 
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 
 }
