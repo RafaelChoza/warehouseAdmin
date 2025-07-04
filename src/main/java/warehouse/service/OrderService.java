@@ -21,6 +21,12 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
+    @Autowired
+    CartItemService cartItemService;
+
+    @Autowired
+    ProductService productService;
+
     public Optional<Order> createOrderFromCart(Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario con ese Id no encontrado"));
@@ -33,6 +39,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
+            productService.decreaseQuantityProduct(cartItem.getProduct().getId(), cartItem.getQuantity().intValue());
             orderItem.setForMachine(cartItem.getForMachine());
             orderItem.setOrder(order);
             return orderItem;
@@ -41,6 +48,7 @@ public class OrderService {
         order.setItems(orderItems);
 
         Order savedOrder = orderRepository.save(order);
+        cartItemService.deleteAllItems();
 
         cart.getItems().clear();
         cartRepository.save(cart);
