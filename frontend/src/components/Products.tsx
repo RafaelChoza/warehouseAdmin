@@ -9,7 +9,7 @@ import { useShopStore } from '../store/ShopState';
 export default function Products() {
   const [showCart, setShowCart] = useState(false);
   const { cart, fetchCart } = useCart();
-  const { products, fetchProducts} = useShopStore();
+  const { products, fetchProducts } = useShopStore();
   const { } = useShopStore();
   const toggleCart = () => setShowCart(prev => !prev);
 
@@ -28,7 +28,7 @@ export default function Products() {
     }
   };
 
-  
+
 
   return (
     <div className="relative min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100">
@@ -95,8 +95,6 @@ export default function Products() {
       >
         <ItemsCart />
       </div>
-      
-
     </div>
   );
 }

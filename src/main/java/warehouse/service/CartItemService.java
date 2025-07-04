@@ -56,7 +56,6 @@ public class CartItemService {
         } else {
             cartItem.setProduct(product);
             cartItem.setCart(cart);
-            productService.decreaseQuantityProduct(productId, cartItem.getQuantity().intValue());
             return cartItemRepository.save(cartItem);
         }
     }
@@ -88,10 +87,6 @@ public class CartItemService {
         CartItem cartItem = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("No se encontró el item con ID: " + itemId));
 
-        Long productId = cartItem.getProduct().getId();
-
-        productService.decreaseQuantityProduct(productId, 1);
-
         Long newQuantity = cartItem.getQuantity() + 1;
 
         if (newQuantity < 0) {
@@ -106,7 +101,6 @@ public class CartItemService {
         CartItem cartItem = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("No se encontró el item con ID: " + itemId));
 
-        Long productId = cartItem.getProduct().getId();
         Long newQuantity = cartItem.getQuantity() - 1;
 
         if (newQuantity < 0) {
@@ -115,12 +109,10 @@ public class CartItemService {
 
         if (newQuantity == 0) {
             // Si se va a eliminar el item, regresamos la última unidad al inventario
-            productService.increaseQuantityProduct(productId, 1);
             cartItemRepository.deleteById(itemId);
             return null;
         } else {
             // Si solo se reduce la cantidad, disminuimos el inventario
-            productService.decreaseQuantityProduct(productId, 1);
             cartItem.setQuantity(newQuantity);
             return cartItemRepository.save(cartItem);
         }
