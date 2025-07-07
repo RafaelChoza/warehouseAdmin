@@ -60,4 +60,14 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+    public Optional<Order> setOrderAsDelivered(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + id));
+
+        order.setDelivered(true);
+        orderRepository.save(order);
+
+        return Optional.of(order);
+    }
+
 }

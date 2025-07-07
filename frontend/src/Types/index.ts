@@ -55,3 +55,18 @@ export type CartType = {
 export type CartTypeWithMachine = CartItemType & {
   idMachine: string
 }
+
+export type OrderType = {
+  id?: number,
+  user: UserType,
+  items: OrderItemType[],
+  active: boolean,
+  delivered: boolean,
+}
+
+export type OrderItemType = {
+  id?: number,
+  product: ProductType,
+  quantity: number,
+  forMachine: string,
+}

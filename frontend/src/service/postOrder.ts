@@ -12,7 +12,6 @@ export default async function postOrder(userId: number) {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         })
-        console.log(`${url}/order/${userId}`)
         if(!response.ok) {
             console.log("Error al enviar los datos a la base de datos")
         }

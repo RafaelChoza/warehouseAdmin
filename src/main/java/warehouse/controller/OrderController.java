@@ -32,4 +32,13 @@ public class OrderController {
 
         return ResponseEntity.ok(allOrders);
     }
+
+    @PostMapping("/order/{id}/deliver")
+    public ResponseEntity<Order> setAsDelivered(@PathVariable Long id) {
+        Order orderDelivered = orderService.setOrderAsDelivered(id)
+            .orElseThrow(() -> new RuntimeException("No exite la orden con el id: " + id));
+            
+        return ResponseEntity.ok(orderDelivered);
+    }
+
 }
