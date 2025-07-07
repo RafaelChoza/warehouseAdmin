@@ -33,9 +33,9 @@ public class ClosedOrder {
     @JsonIgnoreProperties({"orders"}) 
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "closedOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"orders"})
-    private List<OrderItem> items;
+    private List<ClosedOrderItem> items;
 
     private Boolean active = true;
 
