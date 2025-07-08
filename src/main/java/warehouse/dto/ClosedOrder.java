@@ -39,5 +39,5 @@ public class ClosedOrder {
 
     private Boolean active = true;
 
-    private Boolean delivered = false;
+    private Boolean delivered = true;
 }
