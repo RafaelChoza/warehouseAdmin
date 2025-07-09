@@ -23,10 +23,11 @@ public class ClosedOrderService {
 
     public Optional<ClosedOrder> createClosedOrderFromOrder(Long orderId) {
         Order orderToClose = orderRepository.findById(orderId)
-            .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + orderId));
+                .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + orderId));
 
         ClosedOrder closedOrder = new ClosedOrder();
         closedOrder.setUser(orderToClose.getUser());
+        closedOrder.setOriginalOrderId(orderToClose.getId());
 
         List<ClosedOrderItem> closedOrderItems = orderToClose.getItems().stream().map(item -> {
             ClosedOrderItem closedOrderItem = new ClosedOrderItem();
@@ -48,4 +49,10 @@ public class ClosedOrderService {
     public List<ClosedOrder> getAllClosedOrders() {
         return closedOrderRepository.findAll();
     }
+
+    public ClosedOrder getClosedOrderById(Long orderId) {
+        return closedOrderRepository.findByOriginalOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("La orden con el id: " + orderId + " no existe"));
+    }
+
 }

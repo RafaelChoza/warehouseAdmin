@@ -28,6 +28,8 @@ public class ClosedOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long originalOrderId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"orders"}) 

@@ -32,4 +32,11 @@ public class ClosedOrderController {
 
         return ResponseEntity.ok(allClosedOrders);
     }
+
+    @GetMapping("/getClosedOrder/{orderId}")
+    public ResponseEntity<ClosedOrder> getClosedOrderById(@PathVariable Long orderId) {
+        ClosedOrder order = closedOrderService.getClosedOrderById(orderId);
+
+        return ResponseEntity.ok(order);
+    }
 }
