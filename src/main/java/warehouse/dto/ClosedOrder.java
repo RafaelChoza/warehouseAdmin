@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,11 +33,11 @@ public class ClosedOrder {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"orders"}) 
+    @JsonIgnoreProperties({ "closedOrder" })
     private User user;
 
-    @OneToMany(mappedBy = "closedOrder", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"orders"})
+    @OneToMany(mappedBy = "closedOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({ "closedOrder" })
     private List<ClosedOrderItem> items;
 
     private Boolean active = true;

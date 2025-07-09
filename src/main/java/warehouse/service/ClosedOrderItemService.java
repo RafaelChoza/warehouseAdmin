@@ -17,4 +17,8 @@ public class ClosedOrderItemService {
     public List<ClosedOrderItem> getAllClosedOrderItems() {
         return closedOrderItemRepository.findAll();
     }
+
+    public void deleteAllItems() {
+        closedOrderItemRepository.deleteAll();
+    }
 }

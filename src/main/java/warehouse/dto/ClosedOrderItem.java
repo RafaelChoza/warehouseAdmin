@@ -1,7 +1,5 @@
 package warehouse.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "order_items")
+@Table(name = "closedOrder_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +24,6 @@ public class ClosedOrderItem {
 
     @ManyToOne
     @JoinColumn(name = "closed_order_id")   
-    @JsonBackReference
     private ClosedOrder closedOrder;
 
     @ManyToOne

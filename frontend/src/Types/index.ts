@@ -1,40 +1,40 @@
 export type ProductType = {
-    id?: number,
-    name: string,
-    description: string,
-    vendor: string,
-    quantity: number,
-    quantityKanban: number,
-    price: number,
-    mro?: string,
-    createdAt?: string,
+  id?: number,
+  name: string,
+  description: string,
+  vendor: string,
+  quantity: number,
+  quantityKanban: number,
+  price: number,
+  mro?: string,
+  createdAt?: string,
 }
 
 
 export type UserType = {
-    id: number;
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    role: string;
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  role: string;
 }
 
 export type UserRequestFormType = {
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    confirmPassword: string,
-    role: string;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  confirmPassword: string,
+  role: string;
 
 }
 
 export type LoginUserType = {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export type CartItemType = {
@@ -65,6 +65,21 @@ export type OrderType = {
 }
 
 export type OrderItemType = {
+  id?: number,
+  product: ProductType,
+  quantity: number,
+  forMachine: string,
+}
+
+export type ClosedOrderType = {
+  id?: number,
+  user: UserType,
+  items: ClosedOrderItemType[],
+  active: boolean,
+  delivered: boolean,
+}
+
+export type ClosedOrderItemType = {
   id?: number,
   product: ProductType,
   quantity: number,

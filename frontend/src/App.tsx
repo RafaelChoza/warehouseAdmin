@@ -9,6 +9,7 @@ import ItemsCart from './components/ItemsCart';
 import AsignMachineModal from './components/AsignMachineModal';
 import CreateProduct from './components/CreateProduct';
 import Orders from './components/Orders';
+import ClosedOrders from './components/ClosedOrders';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/idMachineModal' element={<AsignMachineModal />} />
         <Route path='/create-product' element={<CreateProduct />} />
         <Route path='/orders' element={<Orders />} />
+        <Route path='/closedOrders' element={<ClosedOrders />} />
       </Routes>
     </BrowserRouter>
   );
