@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { OrderType } from "../Types";
 import getOrders from "../service/getOrders";
-import setAsDelivered from "../service/setAsDelivered";
+import setOrderCompleted from "../service/setOrderCompleted";
 
 export default function Orders() {
   const [orders, setOrders] = useState<OrderType[]>([]);
@@ -22,18 +22,15 @@ export default function Orders() {
     fetchOrders();
   }, []);
 
-  const handleSetDelivered = async (id: OrderType["id"]) => {
-  try {
-    await setAsDelivered(id);
-    setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.id === id ? { ...order, delivered: true } : order
-      )
-    );
-  } catch (error) {
-    console.error("Error al marcar como entregada:", error);
+  const handleSetOrderCompleted = async (orderId: OrderType["id"]) => {
+    try {
+      await setOrderCompleted(Number(orderId))
+    } catch (error) {
+      console.error("Error al marcar la orden como completada")
+    }
   }
-};
+
+
 
 
   return (
@@ -74,9 +71,14 @@ export default function Orders() {
                   </li>
                 ))}
               </ul>
-              <button 
+              <button
                 className="border-green-950 border-2 bg-orange-500 text-white rounded-3xl px-3 py-3 hover:scale-105 hover:bg-orange-700"
-                onClick={() => handleSetDelivered(order.id)}
+                onClick={() => {
+                  if (order.id !== undefined) {
+                    handleSetOrderCompleted(Number(order.id));
+                  }
+                }}
+
               >Marcar como Surtida</button>
             </div>
           ))}

@@ -73,6 +73,7 @@ export type OrderItemType = {
 
 export type ClosedOrderType = {
   id?: number,
+  originalOrderId: number,
   user: UserType,
   items: ClosedOrderItemType[],
   active: boolean,
