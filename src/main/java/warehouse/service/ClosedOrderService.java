@@ -41,6 +41,7 @@ public class ClosedOrderService {
             closedOrderItem.setProduct(item.getProduct());
             closedOrderItem.setForMachine(item.getForMachine());
             closedOrderItem.setQuantity(item.getQuantity());
+            closedOrderItem.setKanbanQuantity(item.getKanbanQuantity());
             closedOrderItem.setClosedOrder(closedOrder);
             return closedOrderItem;
         }).toList();

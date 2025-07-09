@@ -8,7 +8,7 @@ export default function CreateProduct() {
         description: "",
         vendor: "",
         quantity: 0,
-        quantityKanban: 0,
+        kanbanQuantity: 0,
         price: 0,
         mro: "",
     }
@@ -88,7 +88,7 @@ export default function CreateProduct() {
                         placeholder="Cantidad Kanban"
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
-                        value={formData.quantityKanban}
+                        value={formData.kanbanQuantity}
                     />
                     <input
                         type="number"

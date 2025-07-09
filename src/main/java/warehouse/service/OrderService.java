@@ -39,6 +39,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setKanbanQuantity(cartItem.getKanbanQuantity());
             productService.decreaseQuantityProduct(cartItem.getProduct().getId(), cartItem.getQuantity().intValue());
             orderItem.setForMachine(cartItem.getForMachine());
             orderItem.setOrder(order);

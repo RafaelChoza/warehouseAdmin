@@ -64,7 +64,7 @@ public class ProductService {
         }
 
         if (product.getQuantity() <= product.getKanbanQuantity()) {
-            System.out.println("PRECUACION: Se ha alcanzado el nivel de inventario para solicitar Kanban");
+            throw new RuntimeException("Se ha alcanzado el nivel minimo de Kanban");
         }
 
         product.setQuantity(product.getQuantity() - quantityToDecrease);

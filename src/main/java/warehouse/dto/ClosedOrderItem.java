@@ -31,6 +31,7 @@ public class ClosedOrderItem {
     private Product product;
 
     private Long quantity;
+    private Long kanbanQuantity;
 
     private String forMachine;
 }

@@ -4,7 +4,7 @@ export type ProductType = {
   description: string,
   vendor: string,
   quantity: number,
-  quantityKanban: number,
+  kanbanQuantity: number,
   price: number,
   mro?: string,
   createdAt?: string,

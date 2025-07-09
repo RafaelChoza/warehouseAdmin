@@ -5,16 +5,21 @@ import postCartItem from '../service/postCartItem';
 import ItemsCart from './ItemsCart';
 import { useShopStore } from '../store/ShopState';
 
-
 export default function Products() {
   const [showCart, setShowCart] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const { cart, fetchCart } = useCart();
   const { products, fetchProducts } = useShopStore();
-  const { } = useShopStore();
+
+
+  const searchTermInitialState = () => {
+    setSearchTerm("")
+  }
+
   const toggleCart = () => setShowCart(prev => !prev);
 
   useEffect(() => {
-    fetchProducts()
+    fetchProducts();
   }, [fetchProducts]);
 
   const handleAddToCart = async (product: ProductType) => {
@@ -22,13 +27,17 @@ export default function Products() {
       if (typeof product.id !== 'number') throw new Error('El producto no tiene un ID válido');
       await postCartItem(product.id, 1);
       await fetchCart();
-      await fetchProducts()
+      await fetchProducts();
     } catch (error) {
       console.error('Error al agregar producto al carrito:', error);
     }
   };
 
-
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.vendor.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="relative min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100">
@@ -39,9 +48,22 @@ export default function Products() {
         {showCart ? "Cerrar carrito" : `Ver carrito (${cart?.items.length || 0})`}
       </button>
 
-      <h2 className="text-3xl font-bold text-orange-600 mb-6">Productos</h2>
-      {products.length === 0 ? (
-        <p className="text-gray-500">Cargando productos...</p>
+      <h2 className="text-3xl font-bold text-orange-600 mb-4">Productos</h2>
+
+      <input
+        type="text"
+        placeholder="Buscar por nombre, descripción o proveedor..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="mb-6 px-4 py-2 border border-orange-300 rounded shadow-sm w-full max-w-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+      />
+      <button
+        className='mx-4 px-3 py-2 bg-orange-400 text-white font-extrabold rounded-3xl hover:bg-orange-700 hover:scale-95'
+        onClick={searchTermInitialState}
+      >Limpiar</button>
+
+      {filteredProducts.length === 0 ? (
+        <p className="text-gray-500">No se encontraron productos.</p>
       ) : (
         <div className="overflow-x-auto rounded-lg shadow-lg bg-white">
           <table className="min-w-full text-sm text-left text-gray-700">
@@ -51,29 +73,25 @@ export default function Products() {
                 <th className="px-4 py-3">Nombre</th>
                 <th className="px-4 py-3">Descripción</th>
                 <th className="px-4 py-3">Cantidad</th>
+                <th className="px-4 py-3">Kanban</th>
                 <th className="px-4 py-3">MRO</th>
                 <th className="px-4 py-3">Proveedor</th>
                 <th className="px-4 py-3">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {products.map(product => (
+              {filteredProducts.map(product => (
                 <tr key={product.id} className="border-t hover:bg-orange-50 transition">
                   <td className="px-4 py-2">{product.id}</td>
                   <td className="px-4 py-2">{product.name}</td>
                   <td className="px-4 py-2">{product.description}</td>
                   <td className="px-4 py-2">{product.quantity}</td>
+                  <td className="px-4 py-2">{product.kanbanQuantity}</td>
                   <td className="px-4 py-2">{product.mro}</td>
                   <td className="px-4 py-2">{product.vendor}</td>
                   <td className="px-4 py-2">
                     <button
-                      onClick={() => {
-                        if (typeof product.id === 'number') {
-                          handleAddToCart(product);
-                        } else {
-                          console.error("El producto no tiene un ID válido");
-                        }
-                      }}
+                      onClick={() => handleAddToCart(product)}
                       className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-3 py-1 rounded-full text-xs hover:scale-105 transition-transform"
                     >
                       Agregar al carrito
