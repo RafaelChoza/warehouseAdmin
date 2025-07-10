@@ -49,6 +49,7 @@ export default function CreateProduct() {
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
                         value={formData.name}
+                        required
                     />
                     <input
                         type="text"
@@ -57,6 +58,7 @@ export default function CreateProduct() {
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
                         value={formData.description}
+                        required
                     />
                     <input
                         type="text"
@@ -65,6 +67,7 @@ export default function CreateProduct() {
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
                         value={formData.vendor}
+                        required
                     />
                     <input
                         type="text"
@@ -73,6 +76,7 @@ export default function CreateProduct() {
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
                         value={formData.mro}
+                        required
                     />
                     <input
                         type="number"
@@ -81,6 +85,7 @@ export default function CreateProduct() {
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
                         value={formData.quantity}
+                        required
                     />
                     <input
                         type="number"
@@ -89,7 +94,9 @@ export default function CreateProduct() {
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
                         value={formData.kanbanQuantity}
+                        required
                     />
+                    <label htmlFor="price">Precio</label>
                     <input
                         type="number"
                         name="price"
@@ -97,6 +104,7 @@ export default function CreateProduct() {
                         className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                         onChange={handleChange}
                         value={formData.price}
+                        required
                     />
 
                     <div className="md:col-span-2 text-right">

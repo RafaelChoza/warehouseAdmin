@@ -4,23 +4,38 @@ import type { ProductType } from '../Types';
 import postCartItem from '../service/postCartItem';
 import ItemsCart from './ItemsCart';
 import { useShopStore } from '../store/ShopState';
+import IncreaseQtyModal from './IncreaseQtyModal';
 
 export default function Products() {
   const [showCart, setShowCart] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+
   const { cart, fetchCart } = useCart();
   const { products, fetchProducts } = useShopStore();
 
-
-  const searchTermInitialState = () => {
-    setSearchTerm("")
-  }
+  const searchTermInitialState = () => setSearchTerm("");
 
   const toggleCart = () => setShowCart(prev => !prev);
+
+  const openQtyModal = (productId: number) => {
+    setSelectedProductId(productId);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedProductId(null);
+  };
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  const checkKanbanWarning = (product: ProductType): boolean => {
+    return product.quantity <= product.kanbanQuantity;
+  };
 
   const handleAddToCart = async (product: ProductType) => {
     try {
@@ -60,7 +75,9 @@ export default function Products() {
       <button
         className='mx-4 px-3 py-2 bg-orange-400 text-white font-extrabold rounded-3xl hover:bg-orange-700 hover:scale-95'
         onClick={searchTermInitialState}
-      >Limpiar</button>
+      >
+        Limpiar
+      </button>
 
       {filteredProducts.length === 0 ? (
         <p className="text-gray-500">No se encontraron productos.</p>
@@ -90,11 +107,20 @@ export default function Products() {
                   <td className="px-4 py-2">{product.mro}</td>
                   <td className="px-4 py-2">{product.vendor}</td>
                   <td className="px-4 py-2">
+                    {checkKanbanWarning(product) && (
+                      <p className="text-xs text-red-500 font-bold mb-1">⚠️ KANBAN AGOTADO</p>
+                    )}
                     <button
                       onClick={() => handleAddToCart(product)}
                       className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-3 py-1 rounded-full text-xs hover:scale-105 transition-transform"
                     >
                       Agregar al carrito
+                    </button>
+                    <button
+                      onClick={() => openQtyModal(Number(product.id))}
+                      className="bg-gradient-to-r from-rose-300 to-rose-500 text-white px-3 py-1 rounded-full text-xs hover:scale-105 transition-transform my-2"
+                    >
+                      Ajustar Cantidades
                     </button>
                   </td>
                 </tr>
@@ -113,6 +139,22 @@ export default function Products() {
       >
         <ItemsCart />
       </div>
+
+      {/* Modal para ajustar cantidades */}
+      {showModal && selectedProductId !== null && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md py-10 px-4 relative">
+            <button
+              className="absolute top-10 right-2 text-orange-600 text-xl font-bold hover:scale-110"
+              onClick={closeModal}
+            >
+              Cerrar
+            </button>
+            <IncreaseQtyModal productId={selectedProductId} />
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
