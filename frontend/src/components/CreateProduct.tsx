@@ -25,8 +25,9 @@ export default function CreateProduct() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        console.log(formData)
         try {
-            const result = await postProduct();
+            const result = await postProduct(formData);
             console.log(result);
         } catch (error) {
             console.error("Error en el servidor ", error)
@@ -38,7 +39,7 @@ export default function CreateProduct() {
             <h2 className="text-3xl font-bold text-orange-600 mb-6">Agregar Producto a Base de Datos</h2>
 
             <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
-                <form 
+                <form
                     className="grid grid-cols-1 md:grid-cols-2 gap-6"
                     onSubmit={handleSubmit}
                 >
@@ -78,34 +79,48 @@ export default function CreateProduct() {
                         value={formData.mro}
                         required
                     />
-                    <input
-                        type="number"
-                        name="quantity"
-                        placeholder="Cantidad"
-                        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
-                        onChange={handleChange}
-                        value={formData.quantity}
-                        required
-                    />
-                    <input
-                        type="number"
-                        name="quantityKanban"
-                        placeholder="Cantidad Kanban"
-                        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
-                        onChange={handleChange}
-                        value={formData.kanbanQuantity}
-                        required
-                    />
-                    <label htmlFor="price">Precio</label>
-                    <input
-                        type="number"
-                        name="price"
-                        placeholder="Precio"
-                        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
-                        onChange={handleChange}
-                        value={formData.price}
-                        required
-                    />
+                    <div className="p-4 bg-gray-100">
+                        <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-700">Cantidad</label>
+                        <input
+                            id="quantity"
+                            type="number"
+                            name="quantity"
+                            placeholder="Cantidad"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white text-black"
+                            onChange={handleChange}
+                            value={formData.quantity}
+                            required
+                        />
+                    </div>
+
+                    <div className="p-4 bg-gray-100">
+                        <label htmlFor="quantityKanban" className="block mb-2 text-sm font-medium text-gray-700">Cantidad Kanban</label>
+                        <input
+                            id="kanbanQuantity"
+                            type="number"
+                            name="kanbanQuantity"
+                            placeholder="Cantidad Kanban"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white text-black"
+                            onChange={handleChange}
+                            value={formData.kanbanQuantity}
+                            required
+                        />
+                    </div>
+
+                    <div className="p-4 bg-gray-100">
+                        <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-700">Precio</label>
+                        <input
+                            id="price"
+                            type="number"
+                            name="price"
+                            placeholder="Precio"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white text-black"
+                            onChange={handleChange}
+                            value={formData.price}
+                            required
+                        />
+                    </div>
+
 
                     <div className="md:col-span-2 text-right">
                         <button

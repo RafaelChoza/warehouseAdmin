@@ -1,14 +1,16 @@
+import type { ProductType } from "../Types"
 
 
-export default async function postProduct() {
+export default async function postProduct(product: ProductType) {
     const url = "http://localhost:8080"
   try {
     const response = await fetch(`${url}/product`, {
         method: "POST",
         headers: {
-            "Content-Type": "application-json",
+            "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem("token")}`
-        }
+        },
+        body:JSON.stringify(product)
     })
     if(!response.ok) {
         alert("Error al enviar los datos a la base de datos")
