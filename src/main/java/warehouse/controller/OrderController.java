@@ -1,6 +1,7 @@
 package warehouse.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,9 +9,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import warehouse.dto.Order;
+import warehouse.dto.OrderItem;
 import warehouse.service.OrderService;
 
 @RestController
@@ -48,5 +52,19 @@ public class OrderController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/order/{id}/items")
+    public ResponseEntity<?> updateOrderItems(
+        @PathVariable Long orderId,
+        @RequestBody List<OrderItem> updatedItems
+    ) {
+        try {
+            Optional<Order> orderToUpdate = orderService.updateOrderItems(orderId, updatedItems);
+            return ResponseEntity.ok(orderToUpdate.get());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al actualizar los items de la orden:" + e.getMessage());
+        }
+    }
+    
 
 }

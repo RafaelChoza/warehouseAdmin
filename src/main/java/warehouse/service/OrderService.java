@@ -10,6 +10,7 @@ import warehouse.dto.Cart;
 import warehouse.dto.Order;
 import warehouse.dto.OrderItem;
 import warehouse.repository.CartRepository;
+import warehouse.repository.OrderItemRepository;
 import warehouse.repository.OrderRepository;
 
 @Service
@@ -26,6 +27,9 @@ public class OrderService {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     public Optional<Order> createOrderFromCart(Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
@@ -64,10 +68,8 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + id));
 
-        
-
-        if(!order.isDelivered()) {
-            for(OrderItem item: order.getItems()) {
+        if (!order.isDelivered()) {
+            for (OrderItem item : order.getItems()) {
                 productService.decreaseQuantityProduct(item.getId(), item.getQuantity());
                 System.out.println(item.getId());
                 System.out.println(item.getQuantity());
@@ -75,22 +77,38 @@ public class OrderService {
         }
 
         order.setDelivered(true);
-        
+
         orderRepository.save(order);
 
         return Optional.of(order);
     }
 
     public void deleteOrderById(Long id) {
-    Optional<Order> orderToDelete = orderRepository.findById(id);
+        Optional<Order> orderToDelete = orderRepository.findById(id);
 
-    if (orderToDelete.isPresent()) {
-        orderRepository.deleteById(id);
+        if (orderToDelete.isPresent()) {
+            orderRepository.deleteById(id);
 
-    } else {
-        throw new RuntimeException("No se encontró la Orden con el ID indicado");
+        } else {
+            throw new RuntimeException("No se encontró la Orden con el ID indicado");
+        }
     }
-}
 
+    public Optional<Order> updateOrderItems(Long orderId, List<OrderItem> updatedItems) {
+        Order orderToUpdate = orderRepository.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Orden no encontrada con el id: " + orderId));
+
+        for (OrderItem updatedItem: updatedItems) {
+            OrderItem orderItemToUpdate = orderItemRepository.findById(updatedItem.getId())
+                .orElseThrow(() -> new RuntimeException("Item no encontrado con el id: " + updatedItem.getId()));
+
+                orderItemToUpdate.setProduct(updatedItem.getProduct());
+                orderItemToUpdate.setQuantity(updatedItem.getQuantity());
+                orderItemToUpdate.setForMachine(updatedItem.getForMachine());
+
+                orderItemRepository.save(orderItemToUpdate);
+        }
+        return Optional.of(orderToUpdate);
+    }
 
 }

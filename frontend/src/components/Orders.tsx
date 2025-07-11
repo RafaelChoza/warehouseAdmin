@@ -93,6 +93,12 @@ export default function Orders() {
 
               >Marcar como Surtida</button>
               <button
+                className="border-green-900 border-2 bg-green-600 text-white rounded-3xl px-3 py-2 mx-3 hover:scale-95 hover:bg-green-800"
+                onClick={() => handleDeleteOrder(Number(order.id))}
+              >
+                Actualizar Orden
+              </button>
+              <button
                 className="border-green-900 border-2 bg-red-600 text-white rounded-3xl px-3 py-2 mx-3 hover:scale-105 hover:bg-red-700"
                 onClick={() => handleDeleteOrder(Number(order.id))}
               >
