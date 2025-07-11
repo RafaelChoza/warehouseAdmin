@@ -28,6 +28,9 @@ public class ClosedOrderService {
     @Autowired
     ClosedOrderItemRepository closedOrderItemRepository;
 
+    @Autowired
+    ProductService productService;
+
     public Optional<ClosedOrder> createClosedOrderFromOrder(Long orderId) {
         Order orderToClose = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + orderId));
@@ -41,6 +44,9 @@ public class ClosedOrderService {
             closedOrderItem.setProduct(item.getProduct());
             closedOrderItem.setForMachine(item.getForMachine());
             closedOrderItem.setQuantity(item.getQuantity());
+            System.out.println(item.getProduct().getId());
+            System.out.println(item.getQuantity());
+            productService.decreaseQuantityProduct(item.getProduct().getId(), item.getQuantity());
             closedOrderItem.setKanbanQuantity(item.getKanbanQuantity());
             closedOrderItem.setClosedOrder(closedOrder);
             return closedOrderItem;

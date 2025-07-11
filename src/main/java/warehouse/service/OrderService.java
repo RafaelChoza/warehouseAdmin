@@ -64,13 +64,18 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + id));
 
-        if(order.isDelivered()) {
+        
+
+        if(!order.isDelivered()) {
             for(OrderItem item: order.getItems()) {
-                productService.decreaseQuantityProduct(item.getProduct().getId(), item.getQuantity());
+                productService.decreaseQuantityProduct(item.getId(), item.getQuantity());
+                System.out.println(item.getId());
+                System.out.println(item.getQuantity());
             }
         }
 
         order.setDelivered(true);
+        
         orderRepository.save(order);
 
         return Optional.of(order);
