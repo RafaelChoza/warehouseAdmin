@@ -59,13 +59,13 @@ public class ProductController {
     }
 
     @PostMapping("/product/decreaseQty")
-    public ResponseEntity<Product> decreaseProductQuantity(@RequestParam Long id, @RequestParam Integer decreaseQuantity) {
+    public ResponseEntity<Product> decreaseProductQuantity(@RequestParam Long id, @RequestParam Long decreaseQuantity) {
         Product productUpdate = productService.decreaseQuantityProduct(id, decreaseQuantity);
         return ResponseEntity.ok(productUpdate);
     }
 
     @PostMapping("/product/increaseQty")
-    public ResponseEntity<Product> increaseProductQuantity(@RequestParam Long id, @RequestParam Integer increaseQuantity) {
+    public ResponseEntity<Product> increaseProductQuantity(@RequestParam Long id, @RequestParam Long increaseQuantity) {
         Product productUpdate = productService.increaseQuantityProduct(id, increaseQuantity);
         return ResponseEntity.ok(productUpdate);
     }

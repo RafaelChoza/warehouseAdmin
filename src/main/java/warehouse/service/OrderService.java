@@ -40,7 +40,6 @@ public class OrderService {
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setKanbanQuantity(cartItem.getKanbanQuantity());
-            productService.decreaseQuantityProduct(cartItem.getProduct().getId(), cartItem.getQuantity().intValue());
             orderItem.setForMachine(cartItem.getForMachine());
             orderItem.setOrder(order);
             return orderItem;
@@ -65,10 +64,28 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + id));
 
+        if(order.isDelivered()) {
+            for(OrderItem item: order.getItems()) {
+                productService.decreaseQuantityProduct(item.getProduct().getId(), item.getQuantity());
+            }
+        }
+
         order.setDelivered(true);
         orderRepository.save(order);
 
         return Optional.of(order);
     }
+
+    public void deleteOrderById(Long id) {
+    Optional<Order> orderToDelete = orderRepository.findById(id);
+
+    if (orderToDelete.isPresent()) {
+        orderRepository.deleteById(id);
+
+    } else {
+        throw new RuntimeException("No se encontró la Orden con el ID indicado");
+    }
+}
+
 
 }

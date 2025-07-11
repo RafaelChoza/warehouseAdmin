@@ -1,6 +1,9 @@
 package warehouse.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -39,5 +42,8 @@ public class Order {
 
     private Boolean active = true;
 
-    private Boolean delivered = false;
+    private boolean delivered = false;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

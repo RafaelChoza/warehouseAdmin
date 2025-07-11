@@ -1,10 +1,13 @@
 import { useState } from "react";
 import increaseDecreaseProductQty from "../service/increaseDecreaseProductQty";
+import { useShopStore } from "../store/ShopState";
 
 export default function IncreaseQtyModal({ productId }: { productId: number }) {
   const [newQty, setNewQty] = useState<number>(0);
   const [action, setAction] = useState<"increase" | "decrease">("increase");
   const [message, setMessage] = useState<string>("");
+  const { fetchProducts } = useShopStore();
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewQty(Number(e.target.value));
@@ -16,6 +19,7 @@ export default function IncreaseQtyModal({ productId }: { productId: number }) {
     const success = await increaseDecreaseProductQty(productId, action, newQty);
     if (success) {
       setMessage(`✅ Cantidad actualizada exitosamente (${action})`);
+      await fetchProducts()
     } else {
       setMessage("❌ Error al actualizar la cantidad.");
     }

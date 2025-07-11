@@ -51,7 +51,6 @@ public class CartItemService {
         if (existingCartItemOp.isPresent()) {
             CartItem existingCartItem = existingCartItemOp.get();
             existingCartItem.setQuantity(existingCartItem.getQuantity() + cartItem.getQuantity());
-            productService.decreaseQuantityProduct(productId, cartItem.getQuantity().intValue());
             return cartItemRepository.save(existingCartItem);
         } else {
             cartItem.setProduct(product);
@@ -77,8 +76,6 @@ public class CartItemService {
 
         Long productId = cartItem.getProduct().getId();
         Integer quantityToReturn = cartItem.getQuantity().intValue();
-
-        productService.increaseQuantityProduct(productId, quantityToReturn);
 
         cartItemRepository.deleteById(id);
     }

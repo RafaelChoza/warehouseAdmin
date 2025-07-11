@@ -1,6 +1,9 @@
 package warehouse.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -43,4 +46,7 @@ public class ClosedOrder {
     private Boolean active = true;
 
     private Boolean delivered = true;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

@@ -1,6 +1,9 @@
 package warehouse.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -37,4 +40,7 @@ public class Cart {
     private List<CartItem> items;
 
     private Boolean active = true;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

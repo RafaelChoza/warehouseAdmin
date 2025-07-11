@@ -55,7 +55,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Product decreaseQuantityProduct(Long productId, Integer quantityToDecrease) {
+    public Product decreaseQuantityProduct(Long productId, Long quantityToDecrease) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
@@ -71,7 +71,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product increaseQuantityProduct(Long productId, Integer quantityToIncrease) {
+    public Product increaseQuantityProduct(Long productId, Long quantityToIncrease) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 

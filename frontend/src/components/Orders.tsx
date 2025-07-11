@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import type { OrderType } from "../Types";
 import getOrders from "../service/getOrders";
 import setOrderCompleted from "../service/setOrderCompleted";
+import deleteOrder from "../service/deleteOrder";
 
 export default function Orders() {
   const [orders, setOrders] = useState<OrderType[]>([]);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
+  const fetchOrders = async () => {
       const allOrders = await getOrders();
       console.log(allOrders)
       if (allOrders) {
@@ -19,14 +19,25 @@ export default function Orders() {
       }
     };
 
+  useEffect(() => {
     fetchOrders();
   }, []);
 
   const handleSetOrderCompleted = async (orderId: OrderType["id"]) => {
     try {
       await setOrderCompleted(Number(orderId))
+      await fetchOrders()
     } catch (error) {
       console.error("Error al marcar la orden como completada")
+    }
+  }
+
+  const handleDeleteOrder = async (id: OrderType["id"]) => {
+    try {
+      await deleteOrder(id)
+      await fetchOrders()
+    } catch (error) {
+      
     }
   }
 
@@ -80,6 +91,12 @@ export default function Orders() {
                 }}
 
               >Marcar como Surtida</button>
+              <button
+                className="border-green-900 border-2 bg-red-600 text-white rounded-3xl px-3 py-2 mx-3 hover:scale-105 hover:bg-red-700"
+                onClick={() => handleDeleteOrder(Number(order.id))}
+              >
+                Borrar Orden
+              </button>
             </div>
           ))}
         </div>
