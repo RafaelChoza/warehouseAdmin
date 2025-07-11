@@ -41,6 +41,10 @@ public class CartItemService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
+        if(product.getQuantity() == 0) {
+            throw new RuntimeException("No se puede agregar al carrito, Producto en STOCK OUT");
+        }
+
         Long cartId = cartItem.getCart().getId();
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));

@@ -4,12 +4,12 @@ import type { UserRequestFormType } from '../Types';
 
 const initialStateForm = {
   username: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    password: '',
-    confirmPassword: '',
-    role: 'USER',
+  email: '',
+  firstName: '',
+  lastName: '',
+  password: '',
+  confirmPassword: '',
+  role: 'USER',
 }
 
 export default function RequestUser() {
@@ -40,7 +40,7 @@ export default function RequestUser() {
       const result = await postUsers(formData);
       console.log('Usuario registrado con éxito:', result);
       setFormData(initialStateForm)
-      
+
     } catch (error) {
       console.error('Error al registrar usuario:', error);
       alert('Ocurrió un error al registrar el usuario.');

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import postLogin from '../service/postLogin';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import postCar from '../service/postCar';
 
 export default function Login() {
@@ -12,7 +12,7 @@ export default function Login() {
     console.log(username, password)
     e.preventDefault();
     try {
-      const response = await postLogin({username, password})
+      const response = await postLogin({ username, password })
       const token = response.token
       localStorage.setItem("token", token)
       await postCar(token)
@@ -48,6 +48,7 @@ export default function Login() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
+          <Link to="" className='text-blue-500 underline text-xs'>Olvidaste tu contraseña?</Link>
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-2 rounded-md font-semibold hover:scale-105 transition-transform"
@@ -55,6 +56,19 @@ export default function Login() {
             Entrar
           </button>
         </form>
+        <div>
+          <p className='my-5'>Registro de nuevo usuario</p>
+          <div className='flex justify-center'>
+            <Link
+              to="/users-request"
+              type="submit"
+              className="text-center w-3/4 bg-gradient-to-r from-red-700 to-yellow-500 text-white py-2 rounded-md font-semibold hover:scale-105 transition-transform"
+            >
+              Registrarse
+            </Link>
+          </div>
+
+        </div>
       </div>
     </div>
   );

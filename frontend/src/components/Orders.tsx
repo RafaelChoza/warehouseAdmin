@@ -69,6 +69,7 @@ export default function Orders() {
               </p>
 
               <p>Solicitante: {order.user.firstName} {order.user.lastName}</p>
+              <p>Solicitada el: {order.createdAt}</p>
 
               <ul className="divide-y divide-gray-200">
                 {order.items.map((item) => (

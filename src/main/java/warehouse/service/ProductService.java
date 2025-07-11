@@ -63,10 +63,6 @@ public class ProductService {
             throw new RuntimeException("Cantidad insuficiente en inventario");
         }
 
-        if (product.getQuantity() <= product.getKanbanQuantity()) {
-            throw new RuntimeException("Se ha alcanzado el nivel minimo de Kanban");
-        }
-
         product.setQuantity(product.getQuantity() - quantityToDecrease);
         return productRepository.save(product);
     }

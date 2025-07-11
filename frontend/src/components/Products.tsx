@@ -5,6 +5,8 @@ import postCartItem from '../service/postCartItem';
 import ItemsCart from './ItemsCart';
 import { useShopStore } from '../store/ShopState';
 import IncreaseQtyModal from './IncreaseQtyModal';
+import { ShoppingCartIcon } from '@heroicons/react/20/solid';
+
 
 export default function Products() {
   const [showCart, setShowCart] = useState(false);
@@ -51,23 +53,26 @@ export default function Products() {
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.vendor.toLowerCase().includes(searchTerm.toLowerCase())
+    product.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.mro?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="relative min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100">
       <button
         onClick={toggleCart}
-        className="mb-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition"
+        className="flex flex-row mb-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition"
       >
+        <ShoppingCartIcon className='size-6 mx-3' />
         {showCart ? "Cerrar carrito" : `Ver carrito (${cart?.items.length || 0})`}
+
       </button>
 
       <h2 className="text-3xl font-bold text-orange-600 mb-4">Productos</h2>
 
       <input
         type="text"
-        placeholder="Buscar por nombre, descripción o proveedor..."
+        placeholder="Buscar por nombre, descripción, MRO o proveedor..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mb-6 px-4 py-2 border border-orange-300 rounded shadow-sm w-full max-w-md focus:outline-none focus:ring-2 focus:ring-orange-400"
@@ -107,9 +112,13 @@ export default function Products() {
                   <td className="px-4 py-2">{product.mro}</td>
                   <td className="px-4 py-2">{product.vendor}</td>
                   <td className="px-4 py-2">
-                    {checkKanbanWarning(product) && (
+                    {product.quantity === 0 && (
+                      <p className="text-xs text-red-600 font-bold mb-1">🚫 STOCK OUT</p>
+                    )}
+                    {checkKanbanWarning(product) && product.quantity !== 0 && (
                       <p className="text-xs text-red-500 font-bold mb-1">⚠️ KANBAN AGOTADO</p>
                     )}
+
                     <button
                       onClick={() => handleAddToCart(product)}
                       className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-3 py-1 rounded-full text-xs hover:scale-105 transition-transform"

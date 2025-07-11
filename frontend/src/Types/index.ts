@@ -62,6 +62,7 @@ export type OrderType = {
   items: OrderItemType[],
   active: boolean,
   delivered: boolean,
+  createdAt: string,
 }
 
 export type OrderItemType = {
@@ -78,6 +79,7 @@ export type ClosedOrderType = {
   items: ClosedOrderItemType[],
   active: boolean,
   delivered: boolean,
+  createdAt: string,
 }
 
 export type ClosedOrderItemType = {
@@ -85,4 +87,11 @@ export type ClosedOrderItemType = {
   product: ProductType,
   quantity: number,
   forMachine: string,
+}
+
+export type RecoverPasswordType = {
+  username: string,
+  oldPassword: string,
+  newPassword: string,
+  newPassword2: string,
 }
