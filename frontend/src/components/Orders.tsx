@@ -1,32 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { OrderType } from "../Types";
-import getOrders from "../service/getOrders";
 import setOrderCompleted from "../service/setOrderCompleted";
 import deleteOrder from "../service/deleteOrder";
+import { useOrdersState } from "../store/ShopState";
 
 export default function Orders() {
-  const [orders, setOrders] = useState<OrderType[]>([]);
-
-  const fetchOrders = async () => {
-      const allOrders = await getOrders();
-      console.log(allOrders)
-      if (allOrders) {
-        const normalized = allOrders.map((order: any) => ({
-          ...order,
-          orderItem: order.items ?? [],
-        }));
-        setOrders(normalized);
-      }
-    };
+  const orders = useOrdersState(state => state.orders)
+  const fetchOrders = useOrdersState(state => state.fetchOrders)
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders()
   }, []);
 
   const handleSetOrderCompleted = async (orderId: OrderType["id"]) => {
     try {
       await setOrderCompleted(Number(orderId))
-      await fetchOrders()
+      fetchOrders()
     } catch (error) {
       console.error("Error al marcar la orden como completada")
     }
@@ -35,14 +24,11 @@ export default function Orders() {
   const handleDeleteOrder = async (id: OrderType["id"]) => {
     try {
       await deleteOrder(id)
-      await fetchOrders()
+      fetchOrders()
     } catch (error) {
-      
+
     }
   }
-
-
-
 
   return (
     <div className="relative min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100">

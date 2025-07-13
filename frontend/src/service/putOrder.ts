@@ -1,10 +1,10 @@
 import type { OrderType } from "../Types"
 
 
-export default async function updateOrder(id: OrderType["id"], updatedItems: OrderType[]) {
+export default async function putOrder(id: OrderType["id"], updatedItems: OrderType[]) {
     const url = "http://localhost:8080"
     try {
-        const response = await fetch(`${url}/${id}/items`, {
+        const response = await fetch(`${url}/order/${id}/items`, {
             method: "PUT",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`

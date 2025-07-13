@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import type { CartTypeWithMachine, ProductType } from "../Types";
+import type { CartTypeWithMachine, OrderType, ProductType } from "../Types";
 import fetchProducts from "../service/fetchProducts";
+import getOrders from "../service/getOrders";
 
 type ShopState = {
   idMachineByProductId: Record<number, string>;
@@ -30,5 +31,22 @@ export const useShopStore = create<ShopState>((set) => ({
     }
   }
 }));
+
+type OrdersState = {
+  orders: OrderType[],
+  fetchOrders: () => void,
+}
+
+export const useOrdersState = create<OrdersState>((set) => ({
+  orders: [],
+  fetchOrders: async () => {
+    try {
+      const data = await getOrders();
+      set({orders: data})
+    } catch (error) {
+      console.error("Error al obtener orders", error)
+    }
+  }
+}))
 
   
