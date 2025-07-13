@@ -16,6 +16,7 @@ import UpdatePassword from './components/UpdatePassword';
 import UpdateOrderModal from './components/UpdateOrderModal';
 import SendMailRecoverPassword from './components/SendMailRecoverPassword';
 import VerificationCodeInput from './components/VerificationCodeInput';
+import CreateNewPassword from './components/CreateNewPassword';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,6 +46,7 @@ function App() {
             <Route path="/updatePassword" element={<UpdatePassword />} />
             <Route path="/updateOrder" element={<UpdateOrderModal />} />
             <Route path="/recoverEmail" element={<SendMailRecoverPassword />} />
+            <Route path="/createNewPassword" element={<CreateNewPassword />} />
             <Route
               path="/verificationCode"
               element={
