@@ -35,6 +35,8 @@ export const useShopStore = create<ShopState>((set) => ({
 type OrdersState = {
   orders: OrderType[],
   fetchOrders: () => void,
+  selectedOrder: OrderType | null,
+  setSelectedOrder: (order: OrderType | null) => void,
 }
 
 export const useOrdersState = create<OrdersState>((set) => ({
@@ -46,7 +48,9 @@ export const useOrdersState = create<OrdersState>((set) => ({
     } catch (error) {
       console.error("Error al obtener orders", error)
     }
-  }
+  },
+  selectedOrder: null,
+  setSelectedOrder: (order) => set({selectedOrder: order})
 }))
 
   

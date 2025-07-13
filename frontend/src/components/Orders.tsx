@@ -3,10 +3,13 @@ import type { OrderType } from "../Types";
 import setOrderCompleted from "../service/setOrderCompleted";
 import deleteOrder from "../service/deleteOrder";
 import { useOrdersState } from "../store/ShopState";
+import UpdateOrderModal from "./UpdateOrderModal";
 
 export default function Orders() {
   const orders = useOrdersState(state => state.orders)
   const fetchOrders = useOrdersState(state => state.fetchOrders)
+  const setSelectedOrder = useOrdersState(state => state.setSelectedOrder)
+  
 
   useEffect(() => {
     fetchOrders()
@@ -80,9 +83,9 @@ export default function Orders() {
               >Marcar como Surtida</button>
               <button
                 className="border-green-900 border-2 bg-green-600 text-white rounded-3xl px-3 py-2 mx-3 hover:scale-95 hover:bg-green-800"
-                onClick={() => handleDeleteOrder(Number(order.id))}
+                onClick={() => setSelectedOrder(order)}
               >
-                Actualizar Orden
+                Actualizar Cantidades
               </button>
               <button
                 className="border-green-900 border-2 bg-red-600 text-white rounded-3xl px-3 py-2 mx-3 hover:scale-105 hover:bg-red-700"
@@ -94,6 +97,9 @@ export default function Orders() {
           ))}
         </div>
       )}
+      <div>
+        <UpdateOrderModal />
+      </div>
     </div>
   );
 }

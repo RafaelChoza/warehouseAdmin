@@ -13,6 +13,7 @@ import Orders from './components/Orders';
 import ClosedOrders from './components/ClosedOrders';
 import IncreaseQtyModal from './components/IncreaseQtyModal';
 import UpdatePassword from './components/UpdatePassword';
+import UpdateOrderModal from './components/UpdateOrderModal';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -40,6 +41,7 @@ function App() {
             <Route path="/closedOrders" element={<ClosedOrders />} />
             <Route path="/increase-modal" element={<IncreaseQtyModal productId={0} />} />
             <Route path="/updatePassword" element={<UpdatePassword />} />
+            <Route path="/updateOrder" element={<UpdateOrderModal />} />
           </Routes>
         </div>
       </div>

@@ -1,12 +1,13 @@
-import type { OrderType } from "../Types"
+import type { OrderItemType } from "../Types"
 
 
-export default async function putOrder(id: OrderType["id"], updatedItems: OrderType[]) {
+export default async function putOrder(id: number, updatedItems: OrderItemType[]) {
     const url = "http://localhost:8080"
     try {
         const response = await fetch(`${url}/order/${id}/items`, {
             method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(updatedItems)

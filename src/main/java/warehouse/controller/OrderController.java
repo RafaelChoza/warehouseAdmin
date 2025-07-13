@@ -53,7 +53,7 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/order/{id}/items")
+    @PutMapping("/order/{orderId}/items")
     public ResponseEntity<?> updateOrderItems(
         @PathVariable Long orderId,
         @RequestBody List<OrderItem> updatedItems
