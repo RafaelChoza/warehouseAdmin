@@ -14,6 +14,8 @@ import ClosedOrders from './components/ClosedOrders';
 import IncreaseQtyModal from './components/IncreaseQtyModal';
 import UpdatePassword from './components/UpdatePassword';
 import UpdateOrderModal from './components/UpdateOrderModal';
+import SendMailRecoverPassword from './components/SendMailRecoverPassword';
+import VerificationCodeInput from './components/VerificationCodeInput';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,6 +44,16 @@ function App() {
             <Route path="/increase-modal" element={<IncreaseQtyModal productId={0} />} />
             <Route path="/updatePassword" element={<UpdatePassword />} />
             <Route path="/updateOrder" element={<UpdateOrderModal />} />
+            <Route path="/recoverEmail" element={<SendMailRecoverPassword />} />
+            <Route
+              path="/verificationCode"
+              element={
+                <VerificationCodeInput onSubmit={(code: string) => {
+                  // TODO: handle verification code submission
+                  console.log('Verification code submitted:', code);
+                }} />
+              }
+            />
           </Routes>
         </div>
       </div>

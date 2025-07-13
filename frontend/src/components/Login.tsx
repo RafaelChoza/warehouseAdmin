@@ -48,7 +48,7 @@ export default function Login() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
-          <Link to="" className='text-blue-500 underline text-xs'>Olvidaste tu contraseña?</Link>
+          <Link to="/recoverEmail" className='text-blue-500 underline text-xs'>Olvidaste tu contraseña?</Link>
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-2 rounded-md font-semibold hover:scale-105 transition-transform"

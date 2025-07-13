@@ -28,6 +28,8 @@ public class JwtService {
     Map<String, Object> extraClaims = new HashMap<>();
     extraClaims.put("role", user.getRole().name());
     extraClaims.put("userId", user.getId());
+    extraClaims.put("email", user.getEmail());
+    extraClaims.put("username", user.getUsername());
     return getToken(extraClaims, user);
 }
 
