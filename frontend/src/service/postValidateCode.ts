@@ -18,6 +18,6 @@ export default async function postValidateCode(code: string) {
             console.log("Datos enviados con éxito")
         }
     } catch (error) {
-        
+        alert("El código ingresado no es válido. Intenta nuevamente.");
     }
 }

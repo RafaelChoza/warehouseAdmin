@@ -47,15 +47,7 @@ function App() {
             <Route path="/updateOrder" element={<UpdateOrderModal />} />
             <Route path="/recoverEmail" element={<SendMailRecoverPassword />} />
             <Route path="/createNewPassword" element={<CreateNewPassword />} />
-            <Route
-              path="/verificationCode"
-              element={
-                <VerificationCodeInput onSubmit={(code: string) => {
-                  // TODO: handle verification code submission
-                  console.log('Verification code submitted:', code);
-                }} />
-              }
-            />
+            <Route path="/verificationCodeInput" element={<VerificationCodeInput />} />
           </Routes>
         </div>
       </div>
