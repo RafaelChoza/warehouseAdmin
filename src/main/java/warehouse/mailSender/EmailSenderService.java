@@ -57,7 +57,7 @@ public class EmailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject("Aviso de Kanban Vacío");
-        message.setText("El Kanban del producto"  + product.getName() + "se ha agotado, considere comenzar tramite de compra");
+        message.setText("El Kanban del producto"  + product.getName() + " se ha agotado, considere comenzar tramite de compra");
 
         mailSender.send((message));
     }
@@ -69,7 +69,7 @@ public class EmailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject("Aviso de Kanban Vacío");
-        message.setText("El Kanban del producto"  + product.getName() + "se ha agotado, considere comenzar tramite de compra");
+        message.setText("El producto"  + product.getName() + " está en STOCK OUT, considere comenzar tramite de compra");
 
         mailSender.send((message));
     }
