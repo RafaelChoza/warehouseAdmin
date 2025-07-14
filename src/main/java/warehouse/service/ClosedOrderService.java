@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import warehouse.dto.ClosedOrder;
 import warehouse.dto.ClosedOrderItem;
 import warehouse.dto.Order;
+import warehouse.mailSender.EmailSenderService;
 import warehouse.repository.ClosedOrderItemRepository;
 import warehouse.repository.ClosedOrderRepository;
 import warehouse.repository.OrderRepository;
@@ -31,6 +32,9 @@ public class ClosedOrderService {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    EmailSenderService emailSenderService;
+
     public Optional<ClosedOrder> createClosedOrderFromOrder(Long orderId) {
         Order orderToClose = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("No existe la orden con el id: " + orderId));
@@ -44,11 +48,18 @@ public class ClosedOrderService {
             closedOrderItem.setProduct(item.getProduct());
             closedOrderItem.setForMachine(item.getForMachine());
             closedOrderItem.setQuantity(item.getQuantity());
-            System.out.println(item.getProduct().getId());
-            System.out.println(item.getQuantity());
             productService.decreaseQuantityProduct(item.getProduct().getId(), item.getQuantity());
             closedOrderItem.setKanbanQuantity(item.getKanbanQuantity());
             closedOrderItem.setClosedOrder(closedOrder);
+
+            if (item.getProduct().getQuantity() <= item.getProduct().getKanbanQuantity()) {
+                emailSenderService.sendWarningKanbanEmpty("rafaelchoza78@gmail.com", item.getProduct().getName());
+            }
+
+            if (item.getProduct().getQuantity() == 0) {
+                emailSenderService.sendWarningProductEmpty("rafaelchoza78@gmail.com", item.getProduct().getName());
+            }
+
             return closedOrderItem;
         }).toList();
 
