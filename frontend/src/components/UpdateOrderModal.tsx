@@ -12,13 +12,14 @@ export default function UpdateOrderModal() {
 
   if (!selectedOrder) return null; // Si no hay orden seleccionada, no mostrar nada
 
-  const handleChange = (itemId: number, newQty: number) => {
+  const handleChange = (itemId: number, field: "quantity" | "forMachine", value: number | string) => {
     setEditedItems(prev =>
       prev.map(item =>
-        item.id === itemId ? { ...item, quantity: newQty } : item
+        item.id === itemId ? { ...item, [field]: value } : item
       )
     );
-  }
+  };
+
 
   const handleSave = async () => {
     if (!selectedOrder) return null;
@@ -43,9 +44,17 @@ export default function UpdateOrderModal() {
               <p className="font-medium text-gray-800">{item.product.name}</p>
               <label className="mx-3" htmlFor="">Cantidad:</label>
               <input
-                onChange={(e) => handleChange(Number(item.id), Number(e.target.value))}
+                className="border-1 my-2 rounded"
+                onChange={(e) => handleChange(Number(item.id), "quantity" , Number(e.target.value))}
                 type="number"
                 value={item.quantity}
+              />
+              <label htmlFor="">Maquina:</label>
+              <input
+                className="border-1 my-2 rounded"
+                onChange={(e) => handleChange(Number(item.id), "forMachine", e.target.value)}
+                type="text"
+                value={item.forMachine}
               />
             </div>
           ))}

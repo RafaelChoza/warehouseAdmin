@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { OrderType } from "../Types";
 import setOrderCompleted from "../service/setOrderCompleted";
 import deleteOrder from "../service/deleteOrder";
@@ -9,18 +9,21 @@ export default function Orders() {
   const orders = useOrdersState(state => state.orders)
   const fetchOrders = useOrdersState(state => state.fetchOrders)
   const setSelectedOrder = useOrdersState(state => state.setSelectedOrder)
-  
+  const [loadingOrderId, setLoadingOrderId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchOrders()
   }, []);
 
   const handleSetOrderCompleted = async (orderId: OrderType["id"]) => {
+    setLoadingOrderId(Number(orderId));
     try {
       await setOrderCompleted(Number(orderId))
       fetchOrders()
     } catch (error) {
       console.error("Error al marcar la orden como completada")
+    } finally {
+      setLoadingOrderId(null);
     }
   }
 
@@ -73,14 +76,24 @@ export default function Orders() {
                 ))}
               </ul>
               <button
-                className="border-green-950 border-2 bg-orange-500 text-white rounded-3xl px-3 py-3 hover:scale-105 hover:bg-orange-700"
+                className="border-green-950 border-2 bg-orange-500 text-white rounded-3xl px-3 py-3 hover:scale-105 hover:bg-orange-700 flex items-center gap-2 disabled:opacity-50"
+                disabled={loadingOrderId === order.id}
                 onClick={() => {
                   if (order.id !== undefined) {
                     handleSetOrderCompleted(Number(order.id));
                   }
                 }}
+              >
+                {loadingOrderId === order.id ? (
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z"></path>
+                  </svg>
+                ) : (
+                  "Marcar como Surtida"
+                )}
+              </button>
 
-              >Marcar como Surtida</button>
               <button
                 className="border-green-900 border-2 bg-green-600 text-white rounded-3xl px-3 py-2 mx-3 hover:scale-95 hover:bg-green-800"
                 onClick={() => setSelectedOrder(order)}
