@@ -64,7 +64,7 @@ public class EmailSenderService {
 
     public void sendWarningProductEmpty(String toEmail, String productName) {
         Product product = productService.findProductByName(productName)
-            .orElseThrow(() -> new RuntimeException("No se encuentra elprpducto con ese nombre"));
+            .orElseThrow(() -> new RuntimeException("No se encuentra el producto con ese nombre"));
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
