@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useOrdersState } from "../store/ShopState"
 import putOrder from "../service/putOrder";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function UpdateOrderModal() {
   const selectedOrder = useOrdersState(state => state.selectedOrder)
@@ -27,6 +28,7 @@ export default function UpdateOrderModal() {
       await putOrder(Number(selectedOrder.id), editedItems);
       useOrdersState.getState().setSelectedOrder(null);
       useOrdersState.getState().fetchOrders();
+      toast.success("Cantidades Actualizadas 🚀", {autoClose:1500});
     } catch (error) {
       console.error("Error al guardar los cambios", error)
     }
@@ -45,7 +47,7 @@ export default function UpdateOrderModal() {
               <label className="mx-3" htmlFor="">Cantidad:</label>
               <input
                 className="border-1 my-2 rounded"
-                onChange={(e) => handleChange(Number(item.id), "quantity" , Number(e.target.value))}
+                onChange={(e) => handleChange(Number(item.id), "quantity", Number(e.target.value))}
                 type="number"
                 value={item.quantity}
               />
@@ -58,12 +60,12 @@ export default function UpdateOrderModal() {
               />
             </div>
           ))}
-          
+
         </div>
-          <button
-            className="p-2 bg-amber-600 rounded-2xl text-white hover:scale-95 hover:bg-amber-700"
-            onClick={handleSave}
-          >Guardar</button>
+        <button
+          className="p-2 bg-amber-600 rounded-2xl text-white hover:scale-95 hover:bg-amber-700"
+          onClick={handleSave}
+        >Guardar</button>
 
         <button
           className="absolute top-2 right-2 text-sm text-red-500 hover:text-red-700"

@@ -7,6 +7,7 @@ import { useShopStore } from "../store/ShopState";
 import type { CartTypeWithMachine } from "../Types";
 import postOrder from "../service/postOrder";
 import { jwtDecode } from "jwt-decode";
+import { toast, ToastContainer } from "react-toastify";
 
 interface TokenType {
   userId: number
@@ -105,11 +106,13 @@ export default function ItemsCart(): JSX.Element {
 
   // Luego enviar la orden
   handleSendOrder();
+  toast.success("Orden creada con exito", {autoClose:1000})
 };
 
 
   return (
     <div className="p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100 min-h-screen">
+      <ToastContainer />
       <h2 className="text-3xl font-bold text-orange-600 mb-6">Carrito</h2>
       {!cart ? (
         <p className="text-gray-500">Cargando carrito...</p>

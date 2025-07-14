@@ -27,7 +27,8 @@ function AppContent() {
     "/login",
     "/recoverEmail",
     "/createNewPassword",
-    "/verificationCodeInput"
+    "/verificationCodeInput",
+    "/users-request"
   ];
 
   const isProtectedRoute = !unprotectedRoutes.includes(location.pathname);

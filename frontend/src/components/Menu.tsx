@@ -61,6 +61,7 @@ const Menu: React.FC<MenuProps> = ({ onToggle, open }) => {
 
         {/* Botón de Logout */}
         <div className="p-4">
+          
           <button
             onClick={handleLogout}
             className="text-black font-semibold py-2 px-4 rounded-md w-full flex items-center justify-center space-x-2 hover:bg-red-700 hover:text-white hover:border-2 transition-all duration-300"

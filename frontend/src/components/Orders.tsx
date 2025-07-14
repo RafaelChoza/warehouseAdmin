@@ -4,6 +4,7 @@ import setOrderCompleted from "../service/setOrderCompleted";
 import deleteOrder from "../service/deleteOrder";
 import { useOrdersState } from "../store/ShopState";
 import UpdateOrderModal from "./UpdateOrderModal";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Orders() {
   const orders = useOrdersState(state => state.orders)
@@ -20,6 +21,7 @@ export default function Orders() {
     try {
       await setOrderCompleted(Number(orderId))
       fetchOrders()
+      toast.success("Orden surtida al usuario", {autoClose:1000})
     } catch (error) {
       console.error("Error al marcar la orden como completada")
     } finally {
@@ -31,6 +33,7 @@ export default function Orders() {
     try {
       await deleteOrder(id)
       fetchOrders()
+      toast.error("Orden eliminada", {autoClose:1000})
     } catch (error) {
 
     }
@@ -38,6 +41,7 @@ export default function Orders() {
 
   return (
     <div className="relative min-h-screen p-6 bg-gradient-to-br from-white via-orange-50 to-yellow-100">
+      <ToastContainer />
       <h1 className="text-3xl font-bold text-orange-600 mb-6">Órdenes para Surtir</h1>
 
       {orders.length === 0 ? (
