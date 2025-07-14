@@ -75,11 +75,7 @@ public class CartItemService {
     }
 
     public void deleteCartItem(Long id) {
-        CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No se encontró el item con ID: " + id));
-
-        Long productId = cartItem.getProduct().getId();
-        Integer quantityToReturn = cartItem.getQuantity().intValue();
+        
 
         cartItemRepository.deleteById(id);
     }
