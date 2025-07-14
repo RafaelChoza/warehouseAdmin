@@ -68,7 +68,7 @@ public class EmailSenderService {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
-        message.setSubject("Aviso de Kanban Vacío");
+        message.setSubject("Aviso de Producto en STOCK OUT");
         message.setText("El producto "  + product.getName() + " está en STOCK OUT, considere comenzar tramite de compra");
 
         mailSender.send((message));
