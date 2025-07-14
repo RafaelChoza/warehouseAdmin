@@ -1,4 +1,5 @@
 import { useState } from "react";
+import postCreateNewPassword from "../service/postCreateNewPassword";
 
 export default function CreateNewPassword() {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ export default function CreateNewPassword() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.newPassword !== formData.newPassword2) {
@@ -24,7 +25,7 @@ export default function CreateNewPassword() {
     }
 
     console.log("Datos para enviar:", formData);
-    // Aquí puedes llamar a tu servicio para actualizar la contraseña
+    await postCreateNewPassword(formData)
   };
 
   return (
@@ -36,7 +37,7 @@ export default function CreateNewPassword() {
           <input
             type="text"
             name="username"
-            placeholder="Nombre de usuario"
+            placeholder="Escribe tu usuario"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
             onChange={handleChange}
             value={formData.username}

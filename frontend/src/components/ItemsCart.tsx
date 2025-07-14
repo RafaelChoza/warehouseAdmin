@@ -116,7 +116,7 @@ export default function ItemsCart(): JSX.Element {
       ) : cart.items.length === 0 ? (
         <p className="text-gray-500">El carrito está vacío.</p>
       ) : (
-        <div className="overflow-x-auto rounded-lg shadow-lg bg-white">
+        <div className="overflow-y-auto max-h-[400px] rounded-lg shadow-lg bg-white">
           <table className="min-w-full text-sm text-left text-gray-700">
             <thead className="bg-orange-100 text-orange-800 uppercase text-xs">
               <tr>

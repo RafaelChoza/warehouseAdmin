@@ -38,7 +38,7 @@ export default function UpdateOrderModal() {
         <h1 className="text-xl font-bold mb-4 text-orange-600">
           Orden #{selectedOrder.id}
         </h1>
-        <div>
+        <div className="max-h-64 overflow-y-auto mb-4">
           {editedItems.map(item => (
             <div key={item.id} className="mb-2">
               <p className="font-medium text-gray-800">{item.product.name}</p>
@@ -58,12 +58,12 @@ export default function UpdateOrderModal() {
               />
             </div>
           ))}
+          
+        </div>
           <button
             className="p-2 bg-amber-600 rounded-2xl text-white hover:scale-95 hover:bg-amber-700"
             onClick={handleSave}
           >Guardar</button>
-        </div>
-
 
         <button
           className="absolute top-2 right-2 text-sm text-red-500 hover:text-red-700"

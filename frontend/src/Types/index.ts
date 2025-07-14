@@ -89,9 +89,15 @@ export type ClosedOrderItemType = {
   forMachine: string,
 }
 
-export type RecoverPasswordType = {
+export type UpdatePasswordType = {
   username: string,
   oldPassword: string,
+  newPassword: string,
+  newPassword2: string,
+}
+
+export type CreateNewPasswordType = {
+  username: string,
   newPassword: string,
   newPassword2: string,
 }

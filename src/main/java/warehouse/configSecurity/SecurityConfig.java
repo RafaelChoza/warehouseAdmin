@@ -33,7 +33,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
         http.authorizeHttpRequests(authRequest -> authRequest
-                .requestMatchers("/auth/**", "/h2-console/**").permitAll()
+                .requestMatchers("/auth/**", "/h2-console/**", "/email/**").permitAll()
                 //.requestMatchers("").authenticated()
                 .anyRequest().authenticated());
         http.sessionManagement(sessionManager -> sessionManager

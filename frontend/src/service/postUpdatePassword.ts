@@ -1,7 +1,7 @@
-import type { RecoverPasswordType } from "../Types"
+import type { UpdatePasswordType } from "../Types"
 
 
-export default async function postUpdatePassword(request: RecoverPasswordType) {
+export default async function postUpdatePassword(request: UpdatePasswordType) {
     const url = "http://localhost:8080"
 
     try {

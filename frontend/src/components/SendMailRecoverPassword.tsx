@@ -1,8 +1,10 @@
 import { useState } from "react"
 import postSendEmail from "../service/postSendEmail"
+import { useNavigate } from "react-router-dom"
 
 export default function SendMailRecoverPassword() {
   const [email, setEmail] = useState("")
+  const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -19,6 +21,7 @@ export default function SendMailRecoverPassword() {
 
     await postSendEmail(email)
     alert("Correo enviado exitosamente. Revisa tu bandeja de entrada.")
+    navigate("/verificationCodeInput")
   }
 
   return (

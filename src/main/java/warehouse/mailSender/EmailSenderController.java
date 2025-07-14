@@ -50,6 +50,7 @@ public class EmailSenderController {
 
     @PostMapping("/updateCodePassword")
     public ResponseEntity<?> updateCodePassword(@RequestBody UpdatePasswordRequest request) {
+        System.out.println(request);
         emailSenderService.updatePasswordNoOldPassword(request.getUsername(), request.getNewPassword(), request.getNewPassword2());
 
         return ResponseEntity.ok("Password actializado mediante codigo");
