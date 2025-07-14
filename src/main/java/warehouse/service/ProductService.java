@@ -51,6 +51,10 @@ public class ProductService {
         return productRepository.save(existsProduct);
     }
 
+    public Optional<Product> findProductByName(String productName) {
+        return productRepository.findByName(productName);
+    }
+
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }

@@ -39,7 +39,7 @@ export default function ItemsCart(): JSX.Element {
     const success = await updateQuantityService(id, action);
     if (success) {
       await fetchCart();
-      await fetchProducts();
+      fetchProducts();
     }
   };
 
@@ -93,6 +93,19 @@ export default function ItemsCart(): JSX.Element {
 
   };
 
+  const handleSubmitOrder = async () => {
+  if (!cart) return;
+
+  // Asignar máquinas para cada producto en el carrito
+  for (const item of cart.items) {
+    const id = Number(item.id);
+    const idMachine = idMachineByProductId[id];
+    await handleAsignMachine(id, idMachine);
+  }
+
+  // Luego enviar la orden
+  handleSendOrder();
+};
 
 
   return (
@@ -112,7 +125,7 @@ export default function ItemsCart(): JSX.Element {
                 <th className="px-4 py-3">Descripción</th>
                 <th className="px-4 py-3">MRO</th>
                 <th className="px-4 py-3">Cantidad</th>
-                <th className="px-4 py-3">Máquina</th>
+                <th className="px-4 py-3">Asigna a que Máquina</th>
                 <th className="px-4 py-3">Acciones</th>
               </tr>
             </thead>
@@ -128,18 +141,12 @@ export default function ItemsCart(): JSX.Element {
                     <input
                       className="border-2 rounded-2xl px-2 py-1 my-2"
                       type="text"
-                      placeholder="ID Maq."
+                      placeholder="Escribe ID Maq.  "
                       value={idMachineByProductId[Number(item.id)] || ""}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setIdMachineForProduct(Number(item.id), e.target.value)
                       }
                     />
-                    <button
-                      onClick={() => handleAsignMachine(Number(item.id), idMachineByProductId[Number(item.id)])}
-                      className="px-3 pv-1 border-2 border-black rounded-3xl bg-orange-400 text-white font-bold"
-                    >
-                      Máquina
-                    </button>
                   </td>
                   <td className="px-4 py-2 flex gap-2">
                     <button
@@ -170,7 +177,7 @@ export default function ItemsCart(): JSX.Element {
       <div className="flex items-center">
         <button
           className="border-2 rounded-3xl px-3 py-2 bg-amber-600 text-white font-bold my-3 hover:bg-amber-700"
-          onClick={handleSendOrder}>
+          onClick={handleSubmitOrder}>
           Enviar Solicitud
         </button>
       </div>

@@ -9,8 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import warehouse.dto.Product;
 import warehouse.dto.User;
 import warehouse.repository.UserRepository;
+import warehouse.service.ProductService;
 
 @Service
 public class EmailSenderService {
@@ -21,6 +23,9 @@ public class EmailSenderService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ProductService productService;
 
     @Autowired
     VerificationCodeService verificationCodeService;
@@ -43,6 +48,30 @@ public class EmailSenderService {
         message.setText("Tu codigo para verificar es: " + code);
 
         mailSender.send(message);
+    }
+
+    public void sendWarningKanbanEmpty(String toEmail, String productName) {
+        Product product = productService.findProductByName(productName)
+            .orElseThrow(() -> new RuntimeException("No se encuentra elprpducto con ese nombre"));
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Aviso de Kanban Vacío");
+        message.setText("El Kanban del producto"  + product.getName() + "se ha agotado, considere comenzar tramite de compra");
+
+        mailSender.send((message));
+    }
+
+    public void sendWarningProductEmpty(String toEmail, String productName) {
+        Product product = productService.findProductByName(productName)
+            .orElseThrow(() -> new RuntimeException("No se encuentra elprpducto con ese nombre"));
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Aviso de Kanban Vacío");
+        message.setText("El Kanban del producto"  + product.getName() + "se ha agotado, considere comenzar tramite de compra");
+
+        mailSender.send((message));
     }
 
     public void updatePasswordNoOldPassword(String username, String newPassword, String newPassword2) {

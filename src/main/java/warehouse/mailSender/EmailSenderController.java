@@ -25,6 +25,18 @@ public class EmailSenderController {
         return("Correo enviado exitosamente");
     }
 
+    @PostMapping("/sendWarningKanbanEmpty")
+    public String sendWarningEmailKanbanEmpty(@RequestParam String to, @RequestParam String productName) {
+        emailSenderService.sendWarningKanbanEmpty(to, productName);
+        return("Correo enviado exitosamente");
+    }
+
+    @PostMapping("/sendWarningProductEmpty")
+    public String sendWarningEmailProductEmpty(@RequestParam String to, @RequestParam String productName) {
+        emailSenderService.sendWarningProductEmpty(to, productName);
+        return("Correo enviado exitosamente");
+    }
+
     @PostMapping("/validate")
     public String validateCode(@RequestParam String email, @RequestParam String inputCode) {
         boolean isValid = verificationCodeService.validateCode(email, inputCode);
