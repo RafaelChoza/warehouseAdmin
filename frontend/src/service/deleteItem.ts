@@ -5,7 +5,7 @@ export default async function deleteItem(id: number): Promise<boolean> {
     const response = await fetch(`http://localhost:8080/cartItem/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
       },
     });
 

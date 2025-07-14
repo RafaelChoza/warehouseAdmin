@@ -4,7 +4,11 @@ export default async function getOrders() {
     const url = "http://localhost:8080"
 
     try {
-        const response = await fetch(`${url}/order`)
+        const response = await fetch(`${url}/order`,{
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        })
         if(!response.ok){
             console.log("Error al recibir los datos de las ordenes del servidor")
         }

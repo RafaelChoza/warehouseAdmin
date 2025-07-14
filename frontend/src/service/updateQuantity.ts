@@ -5,7 +5,7 @@ export default async function updateQuantity(id: number, action: "increase" | "d
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );

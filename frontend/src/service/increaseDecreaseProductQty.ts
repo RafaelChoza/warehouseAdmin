@@ -10,7 +10,7 @@ export default async function increaseDecreaseProductQty(
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
