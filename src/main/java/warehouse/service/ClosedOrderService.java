@@ -1,7 +1,10 @@
 package warehouse.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import warehouse.dto.ClosedOrder;
 import warehouse.dto.ClosedOrderItem;
 import warehouse.dto.Order;
+import warehouse.dto.Product;
 import warehouse.mailSender.EmailSenderService;
 import warehouse.repository.ClosedOrderItemRepository;
 import warehouse.repository.ClosedOrderRepository;
@@ -98,6 +102,64 @@ public class ClosedOrderService {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido no encontrado.");
         }
+    }
+
+    public Map<String, Long> getProductQuantityMap() {
+        List<ClosedOrder> closedOrders = closedOrderRepository.findAll();
+        Map<String, Long> productQuantityMap = new HashMap<>();
+
+        for (ClosedOrder order : closedOrders) {
+            for (ClosedOrderItem item : order.getItems()) {
+                String productName = item.getProduct().getName();
+                Long quantity = item.getQuantity();
+
+                productQuantityMap.merge(productName, quantity, Long::sum);
+            }
+        }
+        return productQuantityMap;
+    }
+
+    public Long getTotalQuantityOfProductInClosedOrdersBetweenDates(Long productId, LocalDateTime startDate,
+            LocalDateTime endDate) {
+        List<ClosedOrder> closedOrders = closedOrderRepository.findAll();
+        long totalQuantity = 0;
+
+        for (ClosedOrder order : closedOrders) {
+            LocalDateTime createdAt = order.getCreatedAt(); // o getClosedAt(), según tu modelo
+
+            if (createdAt != null && !createdAt.isBefore(startDate) && !createdAt.isAfter(endDate)) {
+                for (ClosedOrderItem item : order.getItems()) {
+                    Product product = item.getProduct();
+                    if (product != null && product.getId().equals(productId)) {
+                        Long quantity = item.getQuantity();
+                        totalQuantity += (quantity != null ? quantity : 0);
+                    }
+                }
+            }
+        }
+
+        return totalQuantity;
+    }
+
+    public Long getConsumptionByLastMonthByProduct(Long productId) {
+        List<ClosedOrder> closedOrders = closedOrderRepository.findAll();
+        LocalDateTime fechaLimite = LocalDateTime.now().minusDays(30);
+        
+        long total = 0;
+
+        for (ClosedOrder order : closedOrders) {
+            
+            if (order.getCreatedAt().isAfter(fechaLimite)) {
+            
+                for (ClosedOrderItem item : order.getItems()) {
+                    
+                    if (item.getProduct().getId().equals(productId)) {
+                        total += item.getQuantity();
+                    }
+                }
+            }
+        }
+        return total;
     }
 
 }

@@ -56,6 +56,10 @@ const Menu: React.FC<MenuProps> = ({ onToggle, open }) => {
               <span>➕</span>
               <span className={open ? 'inline' : 'hidden'}>Crear Producto</span>
             </Link>
+            <Link to="/chart" className="p-2 flex items-center space-x-2 text-gray-700 hover:text-indigo-300 text-l hover:scale-105 hover:bg-gray-500 hover:rounded-2xl transition-all duration-300">
+              <span>➕</span>
+              <span className={open ? 'inline' : 'hidden'}>Grafica</span>
+            </Link>
           </nav>
         </div>
 

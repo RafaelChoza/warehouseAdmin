@@ -18,6 +18,7 @@ import SendMailRecoverPassword from './components/SendMailRecoverPassword';
 import VerificationCodeInput from './components/VerificationCodeInput';
 import CreateNewPassword from './components/CreateNewPassword';
 import ProtectedRoute from './components/ProtectedRoute';
+import Chart from './components/Chart';
 
 function AppContent() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,6 +65,7 @@ function AppContent() {
           <Route path="/recoverEmail" element={<SendMailRecoverPassword />} />
           <Route path="/createNewPassword" element={<CreateNewPassword />} />
           <Route path="/verificationCodeInput" element={<VerificationCodeInput />} />
+          <Route path="/chart" element={<Chart />} />
         </Routes>
       </div>
     </div>
