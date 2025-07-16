@@ -95,6 +95,7 @@ export default function Products() {
                 <th className="px-4 py-3">Nombre</th>
                 <th className="px-4 py-3">Descripción</th>
                 <th className="px-4 py-3">Cantidad</th>
+                <th className="px-4 py-3">Consumo Ultimos 30d</th>
                 <th className="px-4 py-3">Kanban</th>
                 <th className="px-4 py-3">MRO</th>
                 <th className="px-4 py-3">Proveedor</th>
@@ -108,6 +109,7 @@ export default function Products() {
                   <td className="px-4 py-2">{product.name}</td>
                   <td className="px-4 py-2">{product.description}</td>
                   <td className="px-4 py-2">{product.quantity}</td>
+                  <td className="px-4 py-2">OK</td>
                   <td className="px-4 py-2">{product.kanbanQuantity}</td>
                   <td className="px-4 py-2">{product.mro}</td>
                   <td className="px-4 py-2">{product.vendor}</td>
