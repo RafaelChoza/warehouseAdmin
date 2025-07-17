@@ -6,6 +6,7 @@ import ItemsCart from './ItemsCart';
 import { useShopStore } from '../store/ShopState';
 import IncreaseQtyModal from './IncreaseQtyModal';
 import { ShoppingCartIcon } from '@heroicons/react/20/solid';
+import getConsumptionProduct from '../service/getConsumptionProduct';
 
 
 export default function Products() {
@@ -13,9 +14,31 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
-
   const { cart, fetchCart } = useCart();
   const { products, fetchProducts } = useShopStore();
+  const [consumptions, setConsumptions] = useState<Record<number, number>>({});
+
+  useEffect(() => {
+    const fetchConsumptions = async () => {
+      const consumptionMap: Record<number, number> = {};
+
+      for (const product of products) {
+        if (typeof product.id === 'number') {
+          const data = await getConsumptionProduct(product.id);
+          if (typeof data === 'number') {
+            consumptionMap[product.id] = data;
+          }
+        }
+      }
+
+      setConsumptions(consumptionMap);
+    };
+
+    if (products.length > 0) {
+      fetchConsumptions();
+    }
+  }, [products]);
+
 
   const searchTermInitialState = () => setSearchTerm("");
 
@@ -109,7 +132,7 @@ export default function Products() {
                   <td className="px-4 py-2">{product.name}</td>
                   <td className="px-4 py-2">{product.description}</td>
                   <td className="px-4 py-2">{product.quantity}</td>
-                  <td className="px-4 py-2">OK</td>
+                  <td className="px-4 py-2">{Number(product.id) in consumptions ? consumptions[Number(product.id)] : 'Cargando...'}</td>
                   <td className="px-4 py-2">{product.kanbanQuantity}</td>
                   <td className="px-4 py-2">{product.mro}</td>
                   <td className="px-4 py-2">{product.vendor}</td>
